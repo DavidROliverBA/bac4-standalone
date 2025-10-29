@@ -75,6 +75,57 @@ npm run dev
 
 # Build for production
 npm run build
+
+# Build standalone single-file version
+npm run build:standalone
+```
+
+### Deployment Options
+
+#### Option 1: Standalone Single HTML File (Recommended for Simple Use)
+
+**Yes! This app can run completely standalone in any browser!**
+
+After building, you'll find `c4-modelling-tool.html` (451KB) in the root directory. This file:
+- ✅ Contains everything needed (no dependencies, no server required)
+- ✅ Can be opened directly in any modern browser (Chrome, Firefox, Safari, Edge)
+- ✅ Can be shared via email, USB drive, or cloud storage
+- ✅ Works offline completely
+- ✅ All features work including export, import, and auto-save
+
+**To use:**
+```bash
+npm run build:standalone
+# Double-click c4-modelling-tool.html or open it in your browser
+```
+
+#### Option 2: Static Hosting (For Production Deployment)
+
+Deploy the `dist/` folder to any static hosting service:
+- **Netlify**: Drag and drop the `dist` folder
+- **Vercel**: Connect your Git repo and deploy
+- **GitHub Pages**: Push `dist` to gh-pages branch
+- **AWS S3**: Upload `dist` contents to an S3 bucket
+- **Cloudflare Pages**: Connect repo or upload folder
+
+```bash
+npm run build
+# Upload dist/ folder to your hosting service
+```
+
+#### Option 3: Docker Container
+
+Create a `Dockerfile`:
+```dockerfile
+FROM nginx:alpine
+COPY dist/ /usr/share/nginx/html/
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+```bash
+docker build -t c4-modelling-tool .
+docker run -p 8080:80 c4-modelling-tool
 ```
 
 ### Usage
