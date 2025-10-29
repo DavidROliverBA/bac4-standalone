@@ -1,6 +1,18 @@
-# C4 Modelling Tool
+# BAC4 Standalone - Interactive C4 Modelling Tool
 
-An interactive web-based C4 modelling tool built with React that allows architects to create, edit, and visualize C4 diagrams with full interactivity.
+An interactive web-based C4 modelling tool built with React that allows architects to create, edit, and visualize C4 diagrams with full interactivity. **Runs completely standalone in any browser - no server required!**
+
+## 🚀 Quick Start
+
+**Want to use it right now without installing anything?**
+
+1. Build the standalone file: `npm run build:standalone`
+2. Open `bac4-standalone.html` in any browser
+3. Start creating C4 diagrams!
+
+**That's it!** The 451KB file contains everything you need and works completely offline.
+
+---
 
 ## Features
 
@@ -61,6 +73,10 @@ Pre-built templates for common patterns:
 
 ### Prerequisites
 
+**For using the standalone file (recommended):**
+- None! Just a modern web browser
+
+**For development or building from source:**
 - Node.js 18+
 - npm or yarn
 
@@ -124,8 +140,8 @@ CMD ["nginx", "-g", "daemon off;"]
 ```
 
 ```bash
-docker build -t c4-modelling-tool .
-docker run -p 8080:80 c4-modelling-tool
+docker build -t bac4-standalone .
+docker run -p 8080:80 bac4-standalone
 ```
 
 ### Usage
@@ -169,6 +185,8 @@ docker run -p 8080:80 c4-modelling-tool
 
 ```
 bac4-standalone/
+├── bac4-standalone.html         # ⭐ Standalone single-file version (build with: npm run build:standalone)
+├── build-standalone.js          # Script to create standalone HTML file
 ├── src/
 │   ├── components/
 │   │   ├── C4Node.jsx          # Custom node component
@@ -185,11 +203,13 @@ bac4-standalone/
 │   ├── store.js                 # Zustand state management
 │   ├── App.jsx                  # Main application component
 │   └── main.jsx                 # Application entry point
+├── dist/                        # Production build (after: npm run build)
 ├── public/
 ├── index.html
 ├── package.json
 ├── vite.config.js
-└── README.md
+├── README.md
+└── STANDALONE-GUIDE.md          # Detailed guide for standalone usage
 ```
 
 ## Technology Stack
@@ -278,7 +298,7 @@ Image exports of the current canvas view.
 
 ## Features Comparison with C4-PlantUML
 
-| Feature | C4 Modelling Tool | C4-PlantUML |
+| Feature | BAC4 Standalone | C4-PlantUML |
 |---------|------------------|-------------|
 | Interactive Editing | ✅ Yes | ❌ No |
 | Visual Drag & Drop | ✅ Yes | ❌ No |
