@@ -34,6 +34,11 @@ function App() {
     setSelectedElement,
     selectedElement,
     currentLevel,
+    systems,
+    containers,
+    components,
+    people,
+    externalSystems,
   } = useStore();
 
   // Enable local storage auto-save
@@ -86,11 +91,11 @@ function App() {
   // Update nodes and edges when store changes
   useEffect(() => {
     updateNodesFromStore();
-  }, [updateNodesFromStore]);
+  }, [systems, containers, components, people, externalSystems, updateNodesFromStore]);
 
   useEffect(() => {
     updateEdgesFromStore();
-  }, [updateEdgesFromStore]);
+  }, [relationships, updateEdgesFromStore]);
 
   // Handle node drag
   const onNodeDragStop = useCallback(
