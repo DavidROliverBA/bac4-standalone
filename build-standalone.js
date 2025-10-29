@@ -29,7 +29,8 @@ files.forEach(file => {
     // Replace CSS link tag - match the full assets path
     const cssLinkPattern = `<link rel="stylesheet" crossorigin href="/assets/${file}">`;
     if (html.includes(cssLinkPattern)) {
-      html = html.replace(cssLinkPattern, `<style>${content}</style>`);
+      // Use a function to avoid issues with $ in the replacement string
+      html = html.replace(cssLinkPattern, () => `<style>${content}</style>`);
       console.log(`   ✅ CSS inlined`);
     } else {
       console.log(`   ⚠️  CSS link tag not found`);
@@ -38,7 +39,8 @@ files.forEach(file => {
     // Replace JS script tag - match the full assets path
     const jsScriptPattern = `<script type="module" crossorigin src="/assets/${file}"></script>`;
     if (html.includes(jsScriptPattern)) {
-      html = html.replace(jsScriptPattern, `<script type="module">${content}</script>`);
+      // Use a function to avoid issues with $ in the replacement string
+      html = html.replace(jsScriptPattern, () => `<script type="module">${content}</script>`);
       console.log(`   ✅ JS inlined`);
     } else {
       console.log(`   ⚠️  JS script tag not found`);
