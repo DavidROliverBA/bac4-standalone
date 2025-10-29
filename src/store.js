@@ -1,5 +1,17 @@
 import { create } from 'zustand';
 
+// Helper function to get the correct store property name for a type
+const getPropertyName = (type) => {
+  const mapping = {
+    'system': 'systems',
+    'container': 'containers',
+    'component': 'components',
+    'person': 'people',
+    'externalSystem': 'externalSystems',
+  };
+  return mapping[type] || `${type}s`;
+};
+
 const useStore = create((set, get) => ({
   // Project metadata
   metadata: {
@@ -42,8 +54,9 @@ const useStore = create((set, get) => ({
       ...element,
     };
 
+    const propertyName = getPropertyName(type);
     set((state) => ({
-      [`${type}s`]: [...state[`${type}s`], newElement],
+      [propertyName]: [...state[propertyName], newElement],
     }));
 
     return newElement;
@@ -51,8 +64,9 @@ const useStore = create((set, get) => ({
 
   // Update element
   updateElement: (type, id, updates) => {
+    const propertyName = getPropertyName(type);
     set((state) => ({
-      [`${type}s`]: state[`${type}s`].map((el) =>
+      [propertyName]: state[propertyName].map((el) =>
         el.id === id ? { ...el, ...updates } : el
       ),
     }));
@@ -60,8 +74,9 @@ const useStore = create((set, get) => ({
 
   // Delete element
   deleteElement: (type, id) => {
+    const propertyName = getPropertyName(type);
     set((state) => ({
-      [`${type}s`]: state[`${type}s`].filter((el) => el.id !== id),
+      [propertyName]: state[propertyName].filter((el) => el.id !== id),
       relationships: state.relationships.filter(
         (rel) => rel.from !== id && rel.to !== id
       ),
