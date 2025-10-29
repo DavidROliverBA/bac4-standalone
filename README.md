@@ -86,7 +86,7 @@ npm run build:standalone
 
 **Yes! This app can run completely standalone in any browser!**
 
-After building, you'll find `c4-modelling-tool.html` (451KB) in the root directory. This file:
+After building, you'll find `bac4-standalone.html` (451KB) in the root directory. This file:
 - ✅ Contains everything needed (no dependencies, no server required)
 - ✅ Can be opened directly in any modern browser (Chrome, Firefox, Safari, Edge)
 - ✅ Can be shared via email, USB drive, or cloud storage
@@ -96,7 +96,7 @@ After building, you'll find `c4-modelling-tool.html` (451KB) in the root directo
 **To use:**
 ```bash
 npm run build:standalone
-# Double-click c4-modelling-tool.html or open it in your browser
+# Double-click bac4-standalone.html or open it in your browser
 ```
 
 #### Option 2: Static Hosting (For Production Deployment)

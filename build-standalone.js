@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const distPath = path.join(__dirname, 'dist');
 const indexPath = path.join(distPath, 'index.html');
-const outputPath = path.join(__dirname, 'c4-modelling-tool.html');
+const outputPath = path.join(__dirname, 'bac4-standalone.html');
 
 // Read the built index.html
 let html = fs.readFileSync(indexPath, 'utf-8');

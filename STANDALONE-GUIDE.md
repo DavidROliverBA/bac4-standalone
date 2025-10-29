@@ -2,7 +2,7 @@
 
 ## Quick Start
 
-**The `c4-modelling-tool.html` file is a complete, self-contained application that runs entirely in your browser!**
+**The `bac4-standalone.html` file is a complete, self-contained application that runs entirely in your browser!**
 
 ### What You Get
 
@@ -16,7 +16,7 @@
 ### How to Use
 
 #### Method 1: Double-Click
-1. Locate `c4-modelling-tool.html` in your file system
+1. Locate `bac4-standalone.html` in your file system
 2. Double-click the file
 3. It opens in your default browser
 4. Start creating diagrams!
@@ -24,12 +24,12 @@
 #### Method 2: Open in Browser
 1. Open your browser (Chrome, Firefox, Safari, Edge)
 2. Press `Ctrl+O` (Windows/Linux) or `Cmd+O` (Mac)
-3. Select `c4-modelling-tool.html`
+3. Select `bac4-standalone.html`
 4. Click "Open"
 
 #### Method 3: Drag and Drop
 1. Open your browser
-2. Drag `c4-modelling-tool.html` into the browser window
+2. Drag `bac4-standalone.html` into the browser window
 3. Drop to open
 
 ### Features That Work Offline
@@ -49,7 +49,7 @@ All features work without internet:
 ### Distribution Options
 
 #### 1. Email
-Attach `c4-modelling-tool.html` to an email and send to colleagues. They can open it immediately with no setup.
+Attach `bac4-standalone.html` to an email and send to colleagues. They can open it immediately with no setup.
 
 #### 2. Shared Drive
 Place the file on:
@@ -71,8 +71,8 @@ Copy the file to a USB drive for:
 Host on your company intranet:
 ```bash
 # Just copy the file to your web server
-cp c4-modelling-tool.html /var/www/html/
-# Access at: http://intranet.company.com/c4-modelling-tool.html
+cp bac4-standalone.html /var/www/html/
+# Access at: http://intranet.company.com/bac4-standalone.html
 ```
 
 #### 5. Company Wiki
@@ -161,7 +161,7 @@ npm install
 npm run build:standalone
 
 # Find the file
-# c4-modelling-tool.html is now in the root directory
+# bac4-standalone.html is now in the root directory
 ```
 
 ### Customization
