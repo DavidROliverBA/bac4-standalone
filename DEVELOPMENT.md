@@ -67,7 +67,55 @@ const handleEdgeSave = (updates) => {
 <input onBlur={handleEdgeSave} /> // Passes event object as updates!
 ```
 
-### Issue 2: State Updates Not Reflecting Immediately
+### Issue 2: useEffect Resetting Forms on Every Update
+
+**Problem**: When useEffect watches an entire object (`[selectedEdge]`), it runs whenever ANY property of that object changes. If the effect resets form data, this creates a loop where saving triggers a reset.
+
+**Symptoms**:
+- Text fields revert to old values after blur
+- Cannot edit fields - they keep resetting
+- Form resets while typing
+
+**Example of the Problem**:
+```javascript
+// WRONG - Resets form whenever ANY property changes
+useEffect(() => {
+  if (selectedEdge) {
+    setEdgeFormData({
+      description: selectedEdge.description || '',
+      technology: selectedEdge.technology || '',
+    });
+  }
+}, [selectedEdge]); // Runs on every property change!
+
+// What happens:
+// 1. User types "API call" → onChange updates local state
+// 2. User blurs → onBlur saves to store
+// 3. updateRelationship updates selectedEdge in store
+// 4. useEffect sees selectedEdge changed → resets form
+// 5. Form reverts to old value or gets out of sync
+```
+
+**Solution**: Only watch the ID, not the entire object
+```javascript
+// CORRECT - Only resets when selecting a different edge
+useEffect(() => {
+  if (selectedEdge) {
+    setEdgeFormData({
+      description: selectedEdge.description || '',
+      technology: selectedEdge.technology || '',
+    });
+  }
+}, [selectedEdge?.id]); // Only runs when ID changes
+
+// Now:
+// - Form resets when you select a DIFFERENT edge (ID changes)
+// - Form stays intact when you update the SAME edge (ID unchanged)
+```
+
+This pattern applies to any form that edits objects from a store.
+
+### Issue 3: State Updates Not Reflecting Immediately
 
 **Problem**: React state updates are asynchronous. When you update local state and immediately try to use it, you might get stale data.
 
@@ -76,7 +124,7 @@ const handleEdgeSave = (updates) => {
 - Don't rely on state being updated in the same function
 - Example shown in Issue 1 above
 
-### Issue 3: Missing Event Handlers
+### Issue 4: Missing Event Handlers
 
 **Problem**: Adding UI features without implementing the underlying state management.
 
@@ -92,7 +140,7 @@ Example: Annotation resize implementation requires:
 - Storing width/height in element data
 - Applying stored dimensions when creating nodes
 
-### Issue 4: Zustand Store Updates Not Triggering Re-renders
+### Issue 5: Zustand Store Updates Not Triggering Re-renders
 
 **Problem**: When updating selectedElement or selectedEdge, the change doesn't propagate to dependent components.
 
