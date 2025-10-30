@@ -53,7 +53,6 @@ function App() {
   const components = useStore((state) => state.components);
   const people = useStore((state) => state.people);
   const externalSystems = useStore((state) => state.externalSystems);
-  const annotations = useStore((state) => state.annotations);
   const getVisibleElements = useStore((state) => state.getVisibleElements);
 
   // Enable local storage auto-save
@@ -72,7 +71,7 @@ function App() {
       },
     }));
     setNodes(newNodes);
-  }, [systems, containers, components, people, externalSystems, annotations, currentLevel, getVisibleElements, setNodes]);
+  }, [systems, containers, components, people, externalSystems, currentLevel, getVisibleElements, setNodes]);
 
   useEffect(() => {
     const newEdges = relationships.map((rel) => {

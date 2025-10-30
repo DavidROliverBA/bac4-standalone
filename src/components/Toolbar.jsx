@@ -1,4 +1,4 @@
-import { Server, Box, Component, User, ExternalLink, FileText, MessageSquare } from 'lucide-react';
+import { Server, Box, Component, User, ExternalLink, FileText } from 'lucide-react';
 import useStore from '../store';
 import { getTemplateNames, getTemplate } from '../data/templates';
 
@@ -47,13 +47,6 @@ const Toolbar = () => {
       label: 'External System',
       color: 'bg-gray-100 hover:bg-gray-200 text-gray-700',
       visibleAtLevels: ['context', 'container'],
-    },
-    {
-      type: 'annotation',
-      icon: MessageSquare,
-      label: 'Text Annotation',
-      color: 'bg-amber-50 hover:bg-amber-100 text-amber-700 border-amber-300',
-      visibleAtLevels: ['context', 'container', 'component', 'code'],
     },
   ];
 

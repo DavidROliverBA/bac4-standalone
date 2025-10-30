@@ -8,14 +8,13 @@ const getPropertyName = (type) => {
     'component': 'components',
     'person': 'people',
     'externalSystem': 'externalSystems',
-    'annotation': 'annotations',
   };
   return mapping[type] || `${type}s`;
 };
 
 const useStore = create((set, get) => ({
   // Debug mode - set to true during development to enable logging
-  debugMode: true, // TEMPORARILY ENABLED TO DEBUG ANNOTATION ISSUE
+  debugMode: false,
 
   // Project metadata
   metadata: {
@@ -39,7 +38,6 @@ const useStore = create((set, get) => ({
   components: [],
   people: [],
   externalSystems: [],
-  annotations: [],
 
   // Relationships
   relationships: [],
@@ -193,7 +191,6 @@ const useStore = create((set, get) => ({
       ...state.components,
       ...state.people,
       ...state.externalSystems,
-      ...state.annotations,
     ];
   },
 
@@ -211,7 +208,6 @@ const useStore = create((set, get) => ({
       components: [],
       people: [],
       externalSystems: [],
-      annotations: [],
       relationships: [],
       selectedElement: null,
       warnings: [],
@@ -227,7 +223,6 @@ const useStore = create((set, get) => ({
       components: model.components || [],
       people: model.people || [],
       externalSystems: model.externalSystems || [],
-      annotations: model.annotations || [],
       relationships: model.relationships || [],
     });
   },
@@ -242,7 +237,6 @@ const useStore = create((set, get) => ({
       components: state.components,
       people: state.people,
       externalSystems: state.externalSystems,
-      annotations: state.annotations,
       relationships: state.relationships,
     };
   },
@@ -313,16 +307,15 @@ const useStore = create((set, get) => ({
     const state = get();
     const level = state.currentLevel;
 
-    // Annotations are always visible at all levels
     switch (level) {
       case 'context':
-        return [...state.systems, ...state.people, ...state.externalSystems, ...state.annotations];
+        return [...state.systems, ...state.people, ...state.externalSystems];
       case 'container':
-        return [...state.systems, ...state.containers, ...state.people, ...state.externalSystems, ...state.annotations];
+        return [...state.systems, ...state.containers, ...state.people, ...state.externalSystems];
       case 'component':
-        return [...state.containers, ...state.components, ...state.people, ...state.annotations];
+        return [...state.containers, ...state.components, ...state.people];
       case 'code':
-        return [...state.components, ...state.annotations];
+        return [...state.components];
       default:
         return state.getAllElements();
     }

@@ -61,7 +61,6 @@ const sanitizeModel = (model) => {
     components: sanitizeArray(model.components, sanitizeElement),
     people: sanitizeArray(model.people, sanitizeElement),
     externalSystems: sanitizeArray(model.externalSystems, sanitizeElement),
-    annotations: sanitizeArray(model.annotations, sanitizeElement),
     relationships: sanitizeArray(model.relationships, sanitizeRelationship),
   };
 };
@@ -109,8 +108,7 @@ export const useLocalStorage = () => {
         model.containers?.length > 0 ||
         model.components?.length > 0 ||
         model.people?.length > 0 ||
-        model.externalSystems?.length > 0 ||
-        model.annotations?.length > 0
+        model.externalSystems?.length > 0
       ) {
         try {
           localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(model));
@@ -134,8 +132,7 @@ export const useLocalStorage = () => {
         model.containers?.length > 0 ||
         model.components?.length > 0 ||
         model.people?.length > 0 ||
-        model.externalSystems?.length > 0 ||
-        model.annotations?.length > 0
+        model.externalSystems?.length > 0
       ) {
         try {
           localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(model));

@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { Handle, Position, NodeResizer } from '@xyflow/react';
-import { User, Box, Component, Server, ExternalLink, MessageSquare } from 'lucide-react';
+import { Handle, Position } from '@xyflow/react';
+import { User, Box, Component, Server, ExternalLink } from 'lucide-react';
 
 const C4Node = ({ data, selected }) => {
   const getNodeStyle = () => {
@@ -17,8 +17,6 @@ const C4Node = ({ data, selected }) => {
         return `${baseStyle} bg-purple-100 border-purple-500 hover:bg-purple-200`;
       case 'externalSystem':
         return `${baseStyle} bg-gray-100 border-gray-500 hover:bg-gray-200`;
-      case 'annotation':
-        return 'px-4 py-3 rounded-lg border-2 min-w-[150px] bg-amber-50 border-amber-400 border-dashed hover:bg-amber-100 shadow transition-all';
       default:
         return `${baseStyle} bg-white border-gray-300`;
     }
@@ -37,8 +35,6 @@ const C4Node = ({ data, selected }) => {
         return <User className={iconClass} />;
       case 'externalSystem':
         return <ExternalLink className={iconClass} />;
-      case 'annotation':
-        return <MessageSquare className={iconClass} />;
       default:
         return <Box className={iconClass} />;
     }
@@ -56,37 +52,10 @@ const C4Node = ({ data, selected }) => {
         return 'Person';
       case 'externalSystem':
         return 'External System';
-      case 'annotation':
-        return 'Note';
       default:
         return data.type;
     }
   };
-
-  // Render annotation differently (no handles, simpler layout, resizable)
-  if (data.type === 'annotation') {
-    return (
-      <>
-        <NodeResizer
-          minWidth={150}
-          minHeight={60}
-          isVisible={selected}
-          lineClassName="border-amber-400"
-          handleClassName="h-3 w-3 bg-amber-400 border-2 border-white"
-        />
-        <div className={`${getNodeStyle()} h-full w-full ${selected ? 'ring-4 ring-amber-400' : ''}`}>
-          <div className="flex items-start gap-2 h-full">
-            <div className="mt-1">{getIcon()}</div>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm text-amber-900 font-medium break-words">
-                {data.name || 'Note'}
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
 
   return (
     <div className={`${getNodeStyle()} ${selected ? 'ring-4 ring-blue-400' : ''}`}>
