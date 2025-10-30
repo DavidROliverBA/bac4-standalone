@@ -42,44 +42,10 @@ function App() {
     // Apply changes to React Flow
     onNodesChange(changes);
 
-    // Check for dimension changes and save to store
-    changes.forEach((change) => {
-      if (change.type === 'dimensions' && change.dimensions) {
-        const element = getAllElements().find((el) => el.id === change.id);
-        if (element && element.type === 'annotation') {
-          const newWidth = Number(change.dimensions.width);
-          const newHeight = Number(change.dimensions.height);
-          const oldWidth = element.width ? Number(element.width) : undefined;
-          const oldHeight = element.height ? Number(element.height) : undefined;
-
-          // Only update if dimensions actually changed to prevent infinite loop
-          // Allow 2px tolerance for floating point and rendering differences
-          const widthChanged = oldWidth === undefined || Math.abs(oldWidth - newWidth) > 2;
-          const heightChanged = oldHeight === undefined || Math.abs(oldHeight - newHeight) > 2;
-
-          console.log('[BAC4] Dimension check:', {
-            id: change.id.substring(0, 20),
-            oldW: oldWidth,
-            newW: newWidth,
-            diffW: oldWidth ? Math.abs(oldWidth - newWidth) : 'N/A',
-            widthChanged,
-            oldH: oldHeight,
-            newH: newHeight,
-            diffH: oldHeight ? Math.abs(oldHeight - newHeight) : 'N/A',
-            heightChanged,
-            willSave: widthChanged || heightChanged
-          });
-
-          if (widthChanged || heightChanged) {
-            updateElement(element.type, element.id, {
-              width: newWidth,
-              height: newHeight,
-            });
-          }
-        }
-      }
-    });
-  }, [onNodesChange, getAllElements, updateElement]);
+    // DISABLED: Dimension tracking for annotations causes infinite loops
+    // TODO: Fix this properly later
+    // For now, annotations will not persist their size on refresh
+  }, [onNodesChange]);
 
   // Subscribe to individual store arrays to trigger re-renders
   const systems = useStore((state) => state.systems);
@@ -96,27 +62,15 @@ function App() {
   // Update nodes and edges when store changes
   useEffect(() => {
     const elements = getVisibleElements();
-    const newNodes = elements.map((el) => {
-      const node = {
-        id: el.id,
-        type: 'c4Node',
-        position: el.position || { x: Math.random() * 400, y: Math.random() * 300 },
-        data: {
-          ...el,
-          label: el.name,
-        },
-      };
-
-      // For annotations, include stored dimensions if they exist
-      if (el.type === 'annotation' && (el.width || el.height)) {
-        node.style = {
-          width: el.width,
-          height: el.height,
-        };
-      }
-
-      return node;
-    });
+    const newNodes = elements.map((el) => ({
+      id: el.id,
+      type: 'c4Node',
+      position: el.position || { x: Math.random() * 400, y: Math.random() * 300 },
+      data: {
+        ...el,
+        label: el.name,
+      },
+    }));
     setNodes(newNodes);
   }, [systems, containers, components, people, externalSystems, annotations, currentLevel, getVisibleElements, setNodes]);
 
