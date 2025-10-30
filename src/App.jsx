@@ -29,24 +29,29 @@ function App() {
 
   const {
     getAllElements,
-    getVisibleElements,
     relationships,
     updateElement,
     setSelectedElement,
     selectedElement,
     currentLevel,
-    systems,
-    containers,
-    components,
-    people,
-    externalSystems,
   } = useStore();
+
+  // Subscribe to store changes for triggering updates
+  const storeElements = useStore((state) => ({
+    systems: state.systems,
+    containers: state.containers,
+    components: state.components,
+    people: state.people,
+    externalSystems: state.externalSystems,
+  }));
+
+  const getVisibleElements = useStore((state) => state.getVisibleElements);
 
   // Enable local storage auto-save
   useLocalStorage();
 
-  // Convert store elements to React Flow nodes
-  const updateNodesFromStore = useCallback(() => {
+  // Update nodes and edges when store changes
+  useEffect(() => {
     const elements = getVisibleElements();
     const newNodes = elements.map((el) => ({
       id: el.id,
@@ -58,10 +63,9 @@ function App() {
       },
     }));
     setNodes(newNodes);
-  }, [getVisibleElements, setNodes]);
+  }, [storeElements, currentLevel, getVisibleElements, setNodes]);
 
-  // Convert store relationships to React Flow edges
-  const updateEdgesFromStore = useCallback(() => {
+  useEffect(() => {
     const newEdges = relationships.map((rel) => ({
       id: rel.id,
       source: rel.from,
@@ -88,15 +92,6 @@ function App() {
     }));
     setEdges(newEdges);
   }, [relationships, setEdges]);
-
-  // Update nodes and edges when store changes
-  useEffect(() => {
-    updateNodesFromStore();
-  }, [systems, containers, components, people, externalSystems, currentLevel, updateNodesFromStore]);
-
-  useEffect(() => {
-    updateEdgesFromStore();
-  }, [relationships, updateEdgesFromStore]);
 
   // Handle node drag
   const onNodeDragStop = useCallback(
