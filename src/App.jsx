@@ -47,11 +47,24 @@ function App() {
       if (change.type === 'dimensions' && change.dimensions) {
         const element = getAllElements().find((el) => el.id === change.id);
         if (element && element.type === 'annotation') {
-          // Extract only numeric values to avoid any circular references
-          updateElement(element.type, element.id, {
-            width: Number(change.dimensions.width),
-            height: Number(change.dimensions.height),
-          });
+          const newWidth = Number(change.dimensions.width);
+          const newHeight = Number(change.dimensions.height);
+
+          // Only update if dimensions actually changed to prevent infinite loop
+          const widthChanged = !element.width || Math.abs(element.width - newWidth) > 1;
+          const heightChanged = !element.height || Math.abs(element.height - newHeight) > 1;
+
+          if (widthChanged || heightChanged) {
+            console.log('[BAC4] Dimension changed, saving:', {
+              id: change.id,
+              old: { w: element.width, h: element.height },
+              new: { w: newWidth, h: newHeight }
+            });
+            updateElement(element.type, element.id, {
+              width: newWidth,
+              height: newHeight,
+            });
+          }
         }
       }
     });
