@@ -49,17 +49,28 @@ function App() {
         if (element && element.type === 'annotation') {
           const newWidth = Number(change.dimensions.width);
           const newHeight = Number(change.dimensions.height);
+          const oldWidth = element.width ? Number(element.width) : undefined;
+          const oldHeight = element.height ? Number(element.height) : undefined;
 
           // Only update if dimensions actually changed to prevent infinite loop
-          const widthChanged = !element.width || Math.abs(element.width - newWidth) > 1;
-          const heightChanged = !element.height || Math.abs(element.height - newHeight) > 1;
+          // Allow 2px tolerance for floating point and rendering differences
+          const widthChanged = oldWidth === undefined || Math.abs(oldWidth - newWidth) > 2;
+          const heightChanged = oldHeight === undefined || Math.abs(oldHeight - newHeight) > 2;
+
+          console.log('[BAC4] Dimension check:', {
+            id: change.id.substring(0, 20),
+            oldW: oldWidth,
+            newW: newWidth,
+            diffW: oldWidth ? Math.abs(oldWidth - newWidth) : 'N/A',
+            widthChanged,
+            oldH: oldHeight,
+            newH: newHeight,
+            diffH: oldHeight ? Math.abs(oldHeight - newHeight) : 'N/A',
+            heightChanged,
+            willSave: widthChanged || heightChanged
+          });
 
           if (widthChanged || heightChanged) {
-            console.log('[BAC4] Dimension changed, saving:', {
-              id: change.id,
-              old: { w: element.width, h: element.height },
-              new: { w: newWidth, h: newHeight }
-            });
             updateElement(element.type, element.id, {
               width: newWidth,
               height: newHeight,
