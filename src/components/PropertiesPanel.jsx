@@ -70,11 +70,19 @@ const PropertiesPanel = () => {
     }
   };
 
-  const handleEdgeSave = (updates = null) => {
+  const handleEdgeSave = () => {
     if (selectedEdge) {
-      // Use provided updates or current form data
-      const dataToSave = updates || edgeFormData;
-      updateRelationship(selectedEdge.id, dataToSave);
+      updateRelationship(selectedEdge.id, edgeFormData);
+    }
+  };
+
+  const handleEdgeSelectChange = (field, value) => {
+    // Update state
+    const newFormData = { ...edgeFormData, [field]: value };
+    setEdgeFormData(newFormData);
+    // Save immediately with the new data
+    if (selectedEdge) {
+      updateRelationship(selectedEdge.id, newFormData);
     }
   };
 
@@ -159,12 +167,7 @@ const PropertiesPanel = () => {
             <select
               id="arrow-direction"
               value={edgeFormData.arrowDirection}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                handleEdgeInputChange('arrowDirection', newValue);
-                // Save immediately with the new value
-                handleEdgeSave({ ...edgeFormData, arrowDirection: newValue });
-              }}
+              onChange={(e) => handleEdgeSelectChange('arrowDirection', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="right">Right →</option>
@@ -182,12 +185,7 @@ const PropertiesPanel = () => {
             <select
               id="line-style"
               value={edgeFormData.lineStyle}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                handleEdgeInputChange('lineStyle', newValue);
-                // Save immediately with the new value
-                handleEdgeSave({ ...edgeFormData, lineStyle: newValue });
-              }}
+              onChange={(e) => handleEdgeSelectChange('lineStyle', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="solid">Solid ————</option>
