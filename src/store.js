@@ -14,6 +14,9 @@ const getPropertyName = (type) => {
 };
 
 const useStore = create((set, get) => ({
+  // Debug mode - set to true during development to enable logging
+  debugMode: false,
+
   // Project metadata
   metadata: {
     name: 'New C4 Model',
@@ -84,6 +87,11 @@ const useStore = create((set, get) => ({
 
   // Update element
   updateElement: (type, id, updates) => {
+    const state = get();
+    if (state.debugMode) {
+      console.log('[BAC4 Debug] updateElement called:', { type, id, updates });
+    }
+
     const propertyName = getPropertyName(type);
     set((state) => {
       const updatedArray = state[propertyName].map((el) =>
@@ -93,6 +101,10 @@ const useStore = create((set, get) => ({
       // Also update selectedElement if it's the one being updated
       const updatedElement = updatedArray.find((el) => el.id === id);
       const newSelectedElement = state.selectedElement?.id === id ? updatedElement : state.selectedElement;
+
+      if (state.debugMode && updatedElement) {
+        console.log('[BAC4 Debug] Element updated:', updatedElement);
+      }
 
       return {
         [propertyName]: updatedArray,
@@ -128,6 +140,11 @@ const useStore = create((set, get) => ({
 
   // Update relationship
   updateRelationship: (id, updates) => {
+    const state = get();
+    if (state.debugMode) {
+      console.log('[BAC4 Debug] updateRelationship called:', { id, updates });
+    }
+
     set((state) => {
       const updatedRelationships = state.relationships.map((rel) =>
         rel.id === id ? { ...rel, ...updates } : rel
@@ -136,6 +153,10 @@ const useStore = create((set, get) => ({
       // Also update selectedEdge if it's the one being updated
       const updatedRelationship = updatedRelationships.find((rel) => rel.id === id);
       const newSelectedEdge = state.selectedEdge?.id === id ? updatedRelationship : state.selectedEdge;
+
+      if (state.debugMode && updatedRelationship) {
+        console.log('[BAC4 Debug] Relationship updated:', updatedRelationship);
+      }
 
       return {
         relationships: updatedRelationships,

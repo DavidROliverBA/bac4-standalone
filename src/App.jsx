@@ -37,6 +37,25 @@ function App() {
     currentLevel,
   } = useStore();
 
+  // Custom handler to intercept dimension changes
+  const handleNodesChange = useCallback((changes) => {
+    // Apply changes to React Flow
+    onNodesChange(changes);
+
+    // Check for dimension changes and save to store
+    changes.forEach((change) => {
+      if (change.type === 'dimensions' && change.dimensions) {
+        const element = getAllElements().find((el) => el.id === change.id);
+        if (element && element.type === 'annotation') {
+          updateElement(element.type, element.id, {
+            width: change.dimensions.width,
+            height: change.dimensions.height,
+          });
+        }
+      }
+    });
+  }, [onNodesChange, getAllElements, updateElement]);
+
   // Subscribe to individual store arrays to trigger re-renders
   const systems = useStore((state) => state.systems);
   const containers = useStore((state) => state.containers);
@@ -52,15 +71,27 @@ function App() {
   // Update nodes and edges when store changes
   useEffect(() => {
     const elements = getVisibleElements();
-    const newNodes = elements.map((el) => ({
-      id: el.id,
-      type: 'c4Node',
-      position: el.position || { x: Math.random() * 400, y: Math.random() * 300 },
-      data: {
-        ...el,
-        label: el.name,
-      },
-    }));
+    const newNodes = elements.map((el) => {
+      const node = {
+        id: el.id,
+        type: 'c4Node',
+        position: el.position || { x: Math.random() * 400, y: Math.random() * 300 },
+        data: {
+          ...el,
+          label: el.name,
+        },
+      };
+
+      // For annotations, include stored dimensions if they exist
+      if (el.type === 'annotation' && (el.width || el.height)) {
+        node.style = {
+          width: el.width,
+          height: el.height,
+        };
+      }
+
+      return node;
+    });
     setNodes(newNodes);
   }, [systems, containers, components, people, externalSystems, annotations, currentLevel, getVisibleElements, setNodes]);
 
@@ -186,7 +217,7 @@ function App() {
           <ReactFlow
             nodes={nodes}
             edges={edges}
-            onNodesChange={onNodesChange}
+            onNodesChange={handleNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onNodeDragStop={onNodeDragStop}

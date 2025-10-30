@@ -70,9 +70,11 @@ const PropertiesPanel = () => {
     }
   };
 
-  const handleEdgeSave = () => {
+  const handleEdgeSave = (updates = null) => {
     if (selectedEdge) {
-      updateRelationship(selectedEdge.id, edgeFormData);
+      // Use provided updates or current form data
+      const dataToSave = updates || edgeFormData;
+      updateRelationship(selectedEdge.id, dataToSave);
     }
   };
 
@@ -158,8 +160,10 @@ const PropertiesPanel = () => {
               id="arrow-direction"
               value={edgeFormData.arrowDirection}
               onChange={(e) => {
-                handleEdgeInputChange('arrowDirection', e.target.value);
-                setTimeout(handleEdgeSave, 0);
+                const newValue = e.target.value;
+                handleEdgeInputChange('arrowDirection', newValue);
+                // Save immediately with the new value
+                handleEdgeSave({ ...edgeFormData, arrowDirection: newValue });
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
@@ -179,8 +183,10 @@ const PropertiesPanel = () => {
               id="line-style"
               value={edgeFormData.lineStyle}
               onChange={(e) => {
-                handleEdgeInputChange('lineStyle', e.target.value);
-                setTimeout(handleEdgeSave, 0);
+                const newValue = e.target.value;
+                handleEdgeInputChange('lineStyle', newValue);
+                // Save immediately with the new value
+                handleEdgeSave({ ...edgeFormData, lineStyle: newValue });
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
