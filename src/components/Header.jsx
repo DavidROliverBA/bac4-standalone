@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Download, Upload, FileJson, Settings, FileImage, FileCode, FileText, Layout } from 'lucide-react';
 import useStore from '../store';
-import { exportAsPNG, exportAsSVG, generatePlantUML, generateMarkdown, exportAsHTML } from '../utils/exportUtils';
+import { exportAsPNG, exportAsSVG, generatePlantUML, generateMermaid, generateMarkdown, exportAsHTML } from '../utils/exportUtils';
 import { applyHierarchicalLayout, applyGridLayout, applyCircularLayout, applyForceLayout } from '../utils/layoutUtils';
 
 const Header = () => {
@@ -83,6 +83,19 @@ const Header = () => {
     const link = document.createElement('a');
     link.href = url;
     link.download = `${metadata.name.replace(/\s+/g, '-').toLowerCase()}-c4.puml`;
+    link.click();
+    URL.revokeObjectURL(url);
+    setShowExportMenu(false);
+  };
+
+  const handleExportMermaid = () => {
+    const model = exportModel();
+    const mermaid = generateMermaid(model);
+    const blob = new Blob([mermaid], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${metadata.name.replace(/\s+/g, '-').toLowerCase()}-c4.mmd`;
     link.click();
     URL.revokeObjectURL(url);
     setShowExportMenu(false);
@@ -186,6 +199,13 @@ const Header = () => {
                     >
                       <FileCode className="w-4 h-4" />
                       PlantUML
+                    </button>
+                    <button
+                      onClick={handleExportMermaid}
+                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center gap-2"
+                    >
+                      <FileCode className="w-4 h-4" />
+                      Mermaid
                     </button>
                     <button
                       onClick={handleExportMarkdown}

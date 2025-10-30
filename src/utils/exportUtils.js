@@ -55,6 +55,94 @@ export const exportAsSVG = async () => {
 };
 
 /**
+ * Generate Mermaid C4 diagram syntax from model
+ */
+export const generateMermaid = (model) => {
+  // Determine diagram type based on elements present
+  let diagramType = 'C4Context';
+  if (model.components?.length > 0) {
+    diagramType = 'C4Component';
+  } else if (model.containers?.length > 0) {
+    diagramType = 'C4Container';
+  }
+
+  let mermaid = `${diagramType}\n`;
+  mermaid += `  title ${model.metadata.name}\n\n`;
+
+  // Add people
+  model.people?.forEach((person) => {
+    const desc = person.description || '';
+    mermaid += `  Person(${sanitizeId(person.id)}, "${person.name}", "${desc}")\n`;
+  });
+
+  if (model.people?.length > 0) mermaid += '\n';
+
+  // Add systems
+  model.systems?.forEach((system) => {
+    const desc = system.description || '';
+    const tech = system.technology || '';
+    if (tech) {
+      mermaid += `  System(${sanitizeId(system.id)}, "${system.name}", "${desc}", "${tech}")\n`;
+    } else {
+      mermaid += `  System(${sanitizeId(system.id)}, "${system.name}", "${desc}")\n`;
+    }
+  });
+
+  if (model.systems?.length > 0) mermaid += '\n';
+
+  // Add external systems
+  model.externalSystems?.forEach((system) => {
+    const desc = system.description || '';
+    mermaid += `  System_Ext(${sanitizeId(system.id)}, "${system.name}", "${desc}")\n`;
+  });
+
+  if (model.externalSystems?.length > 0) mermaid += '\n';
+
+  // Add containers
+  model.containers?.forEach((container) => {
+    const desc = container.description || '';
+    const tech = container.technology || '';
+    if (tech) {
+      mermaid += `  Container(${sanitizeId(container.id)}, "${container.name}", "${tech}", "${desc}")\n`;
+    } else {
+      mermaid += `  Container(${sanitizeId(container.id)}, "${container.name}", "${desc}")\n`;
+    }
+  });
+
+  if (model.containers?.length > 0) mermaid += '\n';
+
+  // Add components
+  model.components?.forEach((component) => {
+    const desc = component.description || '';
+    const tech = component.technology || '';
+    if (tech) {
+      mermaid += `  Component(${sanitizeId(component.id)}, "${component.name}", "${tech}", "${desc}")\n`;
+    } else {
+      mermaid += `  Component(${sanitizeId(component.id)}, "${component.name}", "${desc}")\n`;
+    }
+  });
+
+  if (model.components?.length > 0) mermaid += '\n';
+
+  // Add relationships
+  model.relationships?.forEach((rel) => {
+    const desc = rel.description || 'uses';
+    const tech = rel.technology || '';
+
+    // Determine relationship direction based on arrowDirection
+    const arrow = rel.arrowDirection === 'left' ? 'Rel_Back' : 'Rel';
+
+    if (tech) {
+      mermaid += `  ${arrow}(${sanitizeId(rel.from)}, ${sanitizeId(rel.to)}, "${desc}", "${tech}")\n`;
+    } else {
+      mermaid += `  ${arrow}(${sanitizeId(rel.from)}, ${sanitizeId(rel.to)}, "${desc}")\n`;
+    }
+  });
+
+  return mermaid;
+};
+
+/**
  * Generate PlantUML C4 syntax from model
  */
 export const generatePlantUML = (model) => {
