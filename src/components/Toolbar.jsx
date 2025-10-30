@@ -3,7 +3,7 @@ import useStore from '../store';
 import { getTemplateNames, getTemplate } from '../data/templates';
 
 const Toolbar = () => {
-  const { addElement, importModel } = useStore();
+  const { addElement, importModel, currentLevel } = useStore();
 
   const handleLoadTemplate = (templateKey) => {
     if (window.confirm('Load this template? This will replace your current model.')) {
@@ -18,32 +18,42 @@ const Toolbar = () => {
       icon: Server,
       label: 'Software System',
       color: 'bg-blue-100 hover:bg-blue-200 text-blue-700',
+      visibleAtLevels: ['context', 'container'],
     },
     {
       type: 'container',
       icon: Box,
       label: 'Container',
       color: 'bg-green-100 hover:bg-green-200 text-green-700',
+      visibleAtLevels: ['container', 'component'],
     },
     {
       type: 'component',
       icon: Component,
       label: 'Component',
       color: 'bg-yellow-100 hover:bg-yellow-200 text-yellow-700',
+      visibleAtLevels: ['component', 'code'],
     },
     {
       type: 'person',
       icon: User,
       label: 'Person',
       color: 'bg-purple-100 hover:bg-purple-200 text-purple-700',
+      visibleAtLevels: ['context', 'container', 'component'],
     },
     {
       type: 'externalSystem',
       icon: ExternalLink,
       label: 'External System',
       color: 'bg-gray-100 hover:bg-gray-200 text-gray-700',
+      visibleAtLevels: ['context', 'container'],
     },
   ];
+
+  // Filter tools based on current C4 level
+  const visibleTools = tools.filter((tool) =>
+    tool.visibleAtLevels.includes(currentLevel)
+  );
 
   const handleAddElement = (type) => {
     const element = {
@@ -59,26 +69,46 @@ const Toolbar = () => {
     addElement(type, element);
   };
 
+  // Get level display name
+  const getLevelLabel = () => {
+    const labels = {
+      context: 'Context',
+      container: 'Container',
+      component: 'Component',
+      code: 'Code',
+    };
+    return labels[currentLevel] || currentLevel;
+  };
+
   return (
     <aside className="w-64 bg-white border-r border-gray-200 p-4">
-      <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">
+      <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-1">
         Add Elements
       </h2>
+      <p className="text-xs text-gray-500 mb-4">
+        {getLevelLabel()} Level
+      </p>
 
       <div className="space-y-2">
-        {tools.map((tool) => {
-          const Icon = tool.icon;
-          return (
-            <button
-              key={tool.type}
-              onClick={() => handleAddElement(tool.type)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border-2 transition-colors ${tool.color}`}
-            >
-              <Icon className="w-5 h-5" />
-              <span className="text-sm font-medium">{tool.label}</span>
-            </button>
-          );
-        })}
+        {visibleTools.length > 0 ? (
+          visibleTools.map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <button
+                key={tool.type}
+                onClick={() => handleAddElement(tool.type)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border-2 transition-colors ${tool.color}`}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="text-sm font-medium">{tool.label}</span>
+              </button>
+            );
+          })
+        ) : (
+          <div className="text-sm text-gray-500 text-center py-4">
+            No elements can be added at this level
+          </div>
+        )}
       </div>
 
       <div className="mt-8">
