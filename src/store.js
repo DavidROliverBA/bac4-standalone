@@ -85,11 +85,20 @@ const useStore = create((set, get) => ({
   // Update element
   updateElement: (type, id, updates) => {
     const propertyName = getPropertyName(type);
-    set((state) => ({
-      [propertyName]: state[propertyName].map((el) =>
+    set((state) => {
+      const updatedArray = state[propertyName].map((el) =>
         el.id === id ? { ...el, ...updates } : el
-      ),
-    }));
+      );
+
+      // Also update selectedElement if it's the one being updated
+      const updatedElement = updatedArray.find((el) => el.id === id);
+      const newSelectedElement = state.selectedElement?.id === id ? updatedElement : state.selectedElement;
+
+      return {
+        [propertyName]: updatedArray,
+        selectedElement: newSelectedElement,
+      };
+    });
   },
 
   // Delete element
@@ -119,11 +128,20 @@ const useStore = create((set, get) => ({
 
   // Update relationship
   updateRelationship: (id, updates) => {
-    set((state) => ({
-      relationships: state.relationships.map((rel) =>
+    set((state) => {
+      const updatedRelationships = state.relationships.map((rel) =>
         rel.id === id ? { ...rel, ...updates } : rel
-      ),
-    }));
+      );
+
+      // Also update selectedEdge if it's the one being updated
+      const updatedRelationship = updatedRelationships.find((rel) => rel.id === id);
+      const newSelectedEdge = state.selectedEdge?.id === id ? updatedRelationship : state.selectedEdge;
+
+      return {
+        relationships: updatedRelationships,
+        selectedEdge: newSelectedEdge,
+      };
+    });
   },
 
   // Delete relationship

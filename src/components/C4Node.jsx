@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Handle, Position } from '@xyflow/react';
+import { Handle, Position, NodeResizer } from '@xyflow/react';
 import { User, Box, Component, Server, ExternalLink, MessageSquare } from 'lucide-react';
 
 const C4Node = ({ data, selected }) => {
@@ -63,24 +63,28 @@ const C4Node = ({ data, selected }) => {
     }
   };
 
-  // Render annotation differently (no handles, simpler layout)
+  // Render annotation differently (no handles, simpler layout, resizable)
   if (data.type === 'annotation') {
     return (
-      <div className={`${getNodeStyle()} ${selected ? 'ring-4 ring-amber-400' : ''}`}>
-        <div className="flex items-start gap-2">
-          <div className="mt-1">{getIcon()}</div>
-          <div className="flex-1">
-            <div className="text-sm text-amber-900 font-medium mb-1">
-              {data.name || 'Note'}
-            </div>
-            {data.description && (
-              <div className="text-xs text-amber-800 whitespace-pre-wrap">
-                {data.description}
+      <>
+        <NodeResizer
+          minWidth={150}
+          minHeight={60}
+          isVisible={selected}
+          lineClassName="border-amber-400"
+          handleClassName="h-3 w-3 bg-amber-400 border-2 border-white"
+        />
+        <div className={`${getNodeStyle()} h-full w-full ${selected ? 'ring-4 ring-amber-400' : ''}`}>
+          <div className="flex items-start gap-2 h-full">
+            <div className="mt-1">{getIcon()}</div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm text-amber-900 font-medium break-words">
+                {data.name || 'Note'}
               </div>
-            )}
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 

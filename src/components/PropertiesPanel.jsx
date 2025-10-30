@@ -266,37 +266,41 @@ const PropertiesPanel = () => {
           />
         </div>
 
-        {/* Technology */}
-        <div>
-          <label htmlFor="technology" className="block text-xs font-semibold text-gray-600 uppercase mb-1">
-            Technology
-          </label>
-          <input
-            id="technology"
-            type="text"
-            value={formData.technology}
-            onChange={(e) => handleInputChange('technology', e.target.value)}
-            onBlur={handleSave}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="e.g., Spring Boot, React, PostgreSQL"
-          />
-        </div>
+        {/* Technology - not shown for annotations */}
+        {selectedElement.type !== 'annotation' && (
+          <div>
+            <label htmlFor="technology" className="block text-xs font-semibold text-gray-600 uppercase mb-1">
+              Technology
+            </label>
+            <input
+              id="technology"
+              type="text"
+              value={formData.technology}
+              onChange={(e) => handleInputChange('technology', e.target.value)}
+              onBlur={handleSave}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., Spring Boot, React, PostgreSQL"
+            />
+          </div>
+        )}
 
-        {/* Description */}
-        <div>
-          <label htmlFor="description" className="block text-xs font-semibold text-gray-600 uppercase mb-1">
-            Description
-          </label>
-          <textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) => handleInputChange('description', e.target.value)}
-            onBlur={handleSave}
-            rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Describe the element's purpose and responsibilities"
-          />
-        </div>
+        {/* Description - not shown for annotations */}
+        {selectedElement.type !== 'annotation' && (
+          <div>
+            <label htmlFor="description" className="block text-xs font-semibold text-gray-600 uppercase mb-1">
+              Description
+            </label>
+            <textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              onBlur={handleSave}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Describe the element's purpose and responsibilities"
+            />
+          </div>
+        )}
 
         {/* Tags */}
         <div>
