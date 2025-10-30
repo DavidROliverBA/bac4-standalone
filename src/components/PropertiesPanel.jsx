@@ -3,12 +3,29 @@ import { X, Trash2 } from 'lucide-react';
 import useStore from '../store';
 
 const PropertiesPanel = () => {
-  const { selectedElement, setSelectedElement, updateElement, deleteElement } = useStore();
+  const {
+    selectedElement,
+    selectedEdge,
+    setSelectedElement,
+    setSelectedEdge,
+    updateElement,
+    deleteElement,
+    updateRelationship,
+    deleteRelationship
+  } = useStore();
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     technology: '',
     tags: '',
+  });
+
+  const [edgeFormData, setEdgeFormData] = useState({
+    description: '',
+    technology: '',
+    arrowDirection: 'right',
+    lineStyle: 'solid',
   });
 
   useEffect(() => {
@@ -22,8 +39,23 @@ const PropertiesPanel = () => {
     }
   }, [selectedElement]);
 
+  useEffect(() => {
+    if (selectedEdge) {
+      setEdgeFormData({
+        description: selectedEdge.description || '',
+        technology: selectedEdge.technology || '',
+        arrowDirection: selectedEdge.arrowDirection || 'right',
+        lineStyle: selectedEdge.lineStyle || 'solid',
+      });
+    }
+  }, [selectedEdge]);
+
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleEdgeInputChange = (field, value) => {
+    setEdgeFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSave = () => {
@@ -38,12 +70,140 @@ const PropertiesPanel = () => {
     }
   };
 
+  const handleEdgeSave = () => {
+    if (selectedEdge) {
+      updateRelationship(selectedEdge.id, edgeFormData);
+    }
+  };
+
   const handleDelete = () => {
     if (selectedElement && window.confirm('Are you sure you want to delete this element?')) {
       deleteElement(selectedElement.type, selectedElement.id);
       setSelectedElement(null);
     }
   };
+
+  const handleEdgeDelete = () => {
+    if (selectedEdge && window.confirm('Are you sure you want to delete this relationship?')) {
+      deleteRelationship(selectedEdge.id);
+      setSelectedEdge(null);
+    }
+  };
+
+  // Show edge properties if edge is selected
+  if (selectedEdge) {
+    return (
+      <aside className="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+            Relationship Properties
+          </h2>
+          <button
+            onClick={() => setSelectedEdge(null)}
+            className="p-1 hover:bg-gray-100 rounded"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {/* Relationship ID */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">
+              ID
+            </label>
+            <div className="px-3 py-2 bg-gray-100 rounded text-xs text-gray-600 font-mono break-all">
+              {selectedEdge.id}
+            </div>
+          </div>
+
+          {/* Description/Label */}
+          <div>
+            <label htmlFor="edge-description" className="block text-xs font-semibold text-gray-600 uppercase mb-1">
+              Description
+            </label>
+            <input
+              id="edge-description"
+              type="text"
+              value={edgeFormData.description}
+              onChange={(e) => handleEdgeInputChange('description', e.target.value)}
+              onBlur={handleEdgeSave}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., Makes API calls to"
+            />
+          </div>
+
+          {/* Technology */}
+          <div>
+            <label htmlFor="edge-technology" className="block text-xs font-semibold text-gray-600 uppercase mb-1">
+              Technology/Protocol
+            </label>
+            <input
+              id="edge-technology"
+              type="text"
+              value={edgeFormData.technology}
+              onChange={(e) => handleEdgeInputChange('technology', e.target.value)}
+              onBlur={handleEdgeSave}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., REST/HTTPS, gRPC"
+            />
+          </div>
+
+          {/* Arrow Direction */}
+          <div>
+            <label htmlFor="arrow-direction" className="block text-xs font-semibold text-gray-600 uppercase mb-1">
+              Arrow Direction
+            </label>
+            <select
+              id="arrow-direction"
+              value={edgeFormData.arrowDirection}
+              onChange={(e) => {
+                handleEdgeInputChange('arrowDirection', e.target.value);
+                setTimeout(handleEdgeSave, 0);
+              }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="right">Right →</option>
+              <option value="left">Left ←</option>
+              <option value="both">Both ↔</option>
+              <option value="none">None —</option>
+            </select>
+          </div>
+
+          {/* Line Style */}
+          <div>
+            <label htmlFor="line-style" className="block text-xs font-semibold text-gray-600 uppercase mb-1">
+              Line Style
+            </label>
+            <select
+              id="line-style"
+              value={edgeFormData.lineStyle}
+              onChange={(e) => {
+                handleEdgeInputChange('lineStyle', e.target.value);
+                setTimeout(handleEdgeSave, 0);
+              }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="solid">Solid ————</option>
+              <option value="dashed">Dashed — — —</option>
+              <option value="dotted">Dotted · · · ·</option>
+            </select>
+          </div>
+
+          {/* Delete Button */}
+          <div className="pt-4 border-t border-gray-200">
+            <button
+              onClick={handleEdgeDelete}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+            >
+              <Trash2 className="w-4 h-4" />
+              Delete Relationship
+            </button>
+          </div>
+        </div>
+      </aside>
+    );
+  }
 
   if (!selectedElement) {
     return (

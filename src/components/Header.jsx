@@ -17,6 +17,29 @@ const Header = () => {
     { value: 'code', label: 'Code' },
   ];
 
+  const handleLevelChange = (newLevel) => {
+    const elements = getAllElements();
+
+    // If there are elements, warn the user
+    if (elements.length > 0) {
+      const confirmed = window.confirm(
+        `Changing diagram level will clear all elements from the canvas.\n\n` +
+        `Current elements: ${elements.length}\n\n` +
+        `Are you sure you want to proceed? This cannot be undone.`
+      );
+
+      if (!confirmed) {
+        return; // User cancelled
+      }
+
+      // User confirmed - clear all elements and relationships
+      clearAll();
+    }
+
+    // Change the level
+    setCurrentLevel(newLevel);
+  };
+
   const handleExportJSON = () => {
     const model = exportModel();
     const dataStr = JSON.stringify(model, null, 2);
@@ -124,7 +147,7 @@ const Header = () => {
             <span className="text-sm font-medium text-gray-700">Level:</span>
             <select
               value={currentLevel}
-              onChange={(e) => setCurrentLevel(e.target.value)}
+              onChange={(e) => handleLevelChange(e.target.value)}
               className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {levels.map((level) => (

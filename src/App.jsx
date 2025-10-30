@@ -32,6 +32,7 @@ function App() {
     relationships,
     updateElement,
     setSelectedElement,
+    setSelectedEdge,
     selectedElement,
     currentLevel,
   } = useStore();
@@ -42,6 +43,7 @@ function App() {
   const components = useStore((state) => state.components);
   const people = useStore((state) => state.people);
   const externalSystems = useStore((state) => state.externalSystems);
+  const annotations = useStore((state) => state.annotations);
   const getVisibleElements = useStore((state) => state.getVisibleElements);
 
   // Enable local storage auto-save
@@ -60,33 +62,56 @@ function App() {
       },
     }));
     setNodes(newNodes);
-  }, [systems, containers, components, people, externalSystems, currentLevel, getVisibleElements, setNodes]);
+  }, [systems, containers, components, people, externalSystems, annotations, currentLevel, getVisibleElements, setNodes]);
 
   useEffect(() => {
-    const newEdges = relationships.map((rel) => ({
-      id: rel.id,
-      source: rel.from,
-      target: rel.to,
-      label: rel.description || '',
-      type: 'smoothstep',
-      animated: rel.animated || false,
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-      },
-      style: {
-        stroke: '#64748b',
-        strokeWidth: 2,
-      },
-      labelStyle: {
-        fill: '#334155',
-        fontSize: 12,
-        fontWeight: 500,
-      },
-      labelBgStyle: {
-        fill: '#f8fafc',
-        fillOpacity: 0.9,
-      },
-    }));
+    const newEdges = relationships.map((rel) => {
+      // Determine arrow markers based on arrowDirection
+      const arrowDirection = rel.arrowDirection || 'right';
+      let markerStart = undefined;
+      let markerEnd = undefined;
+
+      if (arrowDirection === 'left' || arrowDirection === 'both') {
+        markerStart = { type: MarkerType.ArrowClosed };
+      }
+      if (arrowDirection === 'right' || arrowDirection === 'both') {
+        markerEnd = { type: MarkerType.ArrowClosed };
+      }
+
+      // Determine line style based on lineStyle
+      const lineStyle = rel.lineStyle || 'solid';
+      let strokeDasharray = undefined;
+      if (lineStyle === 'dashed') {
+        strokeDasharray = '5,5';
+      } else if (lineStyle === 'dotted') {
+        strokeDasharray = '2,2';
+      }
+
+      return {
+        id: rel.id,
+        source: rel.from,
+        target: rel.to,
+        label: rel.description || '',
+        type: 'smoothstep',
+        animated: rel.animated || false,
+        markerStart,
+        markerEnd,
+        style: {
+          stroke: '#64748b',
+          strokeWidth: 2,
+          strokeDasharray,
+        },
+        labelStyle: {
+          fill: '#334155',
+          fontSize: 12,
+          fontWeight: 500,
+        },
+        labelBgStyle: {
+          fill: '#f8fafc',
+          fillOpacity: 0.9,
+        },
+      };
+    });
     setEdges(newEdges);
   }, [relationships, setEdges]);
 
@@ -135,10 +160,20 @@ function App() {
     [getAllElements, setSelectedElement]
   );
 
+  // Handle edge click
+  const onEdgeClick = useCallback(
+    (event, edge) => {
+      const relationship = relationships.find((rel) => rel.id === edge.id);
+      setSelectedEdge(relationship);
+    },
+    [relationships, setSelectedEdge]
+  );
+
   // Handle pane click (deselect)
   const onPaneClick = useCallback(() => {
     setSelectedElement(null);
-  }, [setSelectedElement]);
+    setSelectedEdge(null);
+  }, [setSelectedElement, setSelectedEdge]);
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
@@ -156,6 +191,7 @@ function App() {
             onConnect={onConnect}
             onNodeDragStop={onNodeDragStop}
             onNodeClick={onNodeClick}
+            onEdgeClick={onEdgeClick}
             onPaneClick={onPaneClick}
             onInit={setReactFlowInstance}
             nodeTypes={nodeTypes}

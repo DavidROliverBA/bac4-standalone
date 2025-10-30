@@ -8,6 +8,7 @@ const getPropertyName = (type) => {
     'component': 'components',
     'person': 'people',
     'externalSystem': 'externalSystems',
+    'annotation': 'annotations',
   };
   return mapping[type] || `${type}s`;
 };
@@ -26,12 +27,16 @@ const useStore = create((set, get) => ({
   // Selected element for editing
   selectedElement: null,
 
+  // Selected edge for editing
+  selectedEdge: null,
+
   // Elements by type
   systems: [],
   containers: [],
   components: [],
   people: [],
   externalSystems: [],
+  annotations: [],
 
   // Relationships
   relationships: [],
@@ -44,7 +49,9 @@ const useStore = create((set, get) => ({
 
   setCurrentLevel: (level) => set({ currentLevel: level }),
 
-  setSelectedElement: (element) => set({ selectedElement: element }),
+  setSelectedElement: (element) => set({ selectedElement: element, selectedEdge: null }),
+
+  setSelectedEdge: (edge) => set({ selectedEdge: edge, selectedElement: null }),
 
   // Add element
   addElement: (type, element) => {
@@ -135,6 +142,7 @@ const useStore = create((set, get) => ({
       ...state.components,
       ...state.people,
       ...state.externalSystems,
+      ...state.annotations,
     ];
   },
 
@@ -152,6 +160,7 @@ const useStore = create((set, get) => ({
       components: [],
       people: [],
       externalSystems: [],
+      annotations: [],
       relationships: [],
       selectedElement: null,
       warnings: [],
@@ -167,6 +176,7 @@ const useStore = create((set, get) => ({
       components: model.components || [],
       people: model.people || [],
       externalSystems: model.externalSystems || [],
+      annotations: model.annotations || [],
       relationships: model.relationships || [],
     });
   },
@@ -181,6 +191,7 @@ const useStore = create((set, get) => ({
       components: state.components,
       people: state.people,
       externalSystems: state.externalSystems,
+      annotations: state.annotations,
       relationships: state.relationships,
     };
   },
@@ -251,15 +262,16 @@ const useStore = create((set, get) => ({
     const state = get();
     const level = state.currentLevel;
 
+    // Annotations are always visible at all levels
     switch (level) {
       case 'context':
-        return [...state.systems, ...state.people, ...state.externalSystems];
+        return [...state.systems, ...state.people, ...state.externalSystems, ...state.annotations];
       case 'container':
-        return [...state.systems, ...state.containers, ...state.people, ...state.externalSystems];
+        return [...state.systems, ...state.containers, ...state.people, ...state.externalSystems, ...state.annotations];
       case 'component':
-        return [...state.containers, ...state.components, ...state.people];
+        return [...state.containers, ...state.components, ...state.people, ...state.annotations];
       case 'code':
-        return [...state.components];
+        return [...state.components, ...state.annotations];
       default:
         return state.getAllElements();
     }
