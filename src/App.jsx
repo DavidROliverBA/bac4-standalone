@@ -47,9 +47,10 @@ function App() {
       if (change.type === 'dimensions' && change.dimensions) {
         const element = getAllElements().find((el) => el.id === change.id);
         if (element && element.type === 'annotation') {
+          // Extract only numeric values to avoid any circular references
           updateElement(element.type, element.id, {
-            width: change.dimensions.width,
-            height: change.dimensions.height,
+            width: Number(change.dimensions.width),
+            height: Number(change.dimensions.height),
           });
         }
       }
@@ -151,7 +152,10 @@ function App() {
     (event, node) => {
       const element = getAllElements().find((el) => el.id === node.id);
       if (element) {
-        updateElement(element.type, element.id, { position: node.position });
+        // Extract only x and y to avoid any circular references from React Flow
+        updateElement(element.type, element.id, {
+          position: { x: node.position.x, y: node.position.y }
+        });
       }
     },
     [getAllElements, updateElement]
