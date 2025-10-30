@@ -1,16 +1,8 @@
-import { Server, Box, Component, User, ExternalLink, FileText } from 'lucide-react';
+import { Server, Box, Component, User, ExternalLink } from 'lucide-react';
 import useStore from '../store';
-import { getTemplateNames, getTemplate } from '../data/templates';
 
 const Toolbar = () => {
-  const { addElement, importModel, currentLevel } = useStore();
-
-  const handleLoadTemplate = (templateKey) => {
-    if (window.confirm('Load this template? This will replace your current model.')) {
-      const template = getTemplate(templateKey);
-      importModel(template);
-    }
-  };
+  const { addElement, currentLevel } = useStore();
 
   const tools = [
     {
@@ -109,24 +101,6 @@ const Toolbar = () => {
             No elements can be added at this level
           </div>
         )}
-      </div>
-
-      <div className="mt-8">
-        <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">
-          Templates
-        </h2>
-        <div className="space-y-2">
-          {getTemplateNames().map((template) => (
-            <button
-              key={template.key}
-              onClick={() => handleLoadTemplate(template.key)}
-              className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              <FileText className="w-4 h-4" />
-              <span className="truncate">{template.name}</span>
-            </button>
-          ))}
-        </div>
       </div>
 
       <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
