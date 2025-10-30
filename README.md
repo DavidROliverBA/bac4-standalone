@@ -51,6 +51,7 @@ An interactive web-based C4 modelling tool built with React that allows architec
 - **Export Formats**:
   - JSON (full model data)
   - PlantUML C4 syntax
+  - Mermaid C4 syntax
   - Markdown documentation
   - HTML standalone document
   - PNG image
@@ -66,12 +67,12 @@ Four intelligent layout algorithms:
 - **Circular**: Arranges elements in a circle (best for showing connections)
 - **Force-Directed**: Physics simulation to minimize overlap
 
-### Templates
+### Relationship Customization
 
-Pre-built examples to get started:
-- **Flight Operations System**: Aviation domain with FICO system
-- **E-Commerce Microservices**: Microservices architecture pattern
-- **Layered Architecture**: Traditional 3-tier web application
+- **Arrow Direction**: Left (←), Right (→), Both (↔), None (—)
+- **Line Style**: Solid, Dashed, Dotted
+- **Description**: Custom text for each relationship
+- **Technology/Protocol**: Document communication methods (REST, gRPC, etc.)
 
 ---
 
@@ -143,6 +144,7 @@ The standalone file `bac4-standalone.html` will be created in the root directory
 2. **Choose Format**:
    - **JSON**: Save your work to re-import later
    - **PlantUML**: Generate C4-PlantUML code
+   - **Mermaid**: Generate Mermaid C4 diagram syntax
    - **Markdown**: Create documentation
    - **HTML**: Standalone document with embedded model
    - **PNG**: Raster image for presentations
@@ -189,12 +191,10 @@ bac4-standalone/
 │   │   ├── Header.jsx           # Top navigation with export/import/layout
 │   │   ├── Toolbar.jsx          # Level-aware sidebar with element buttons
 │   │   └── PropertiesPanel.jsx  # Right sidebar for editing properties
-│   ├── data/
-│   │   └── templates.js         # Pre-built model templates
 │   ├── hooks/
 │   │   └── useLocalStorage.js   # Auto-save hook (30s interval)
 │   ├── utils/
-│   │   ├── exportUtils.js       # 6 export formats
+│   │   ├── exportUtils.js       # 7 export formats
 │   │   └── layoutUtils.js       # 4 auto-layout algorithms
 │   ├── store.js                 # Zustand state management
 │   ├── App.jsx                  # Main application with React Flow
@@ -262,6 +262,8 @@ bac4-standalone/
   "to": "target-element-id",
   "description": "Makes API calls to",
   "technology": "REST/HTTPS",
+  "arrowDirection": "right",
+  "lineStyle": "solid",
   "animated": false
 }
 ```
@@ -283,6 +285,17 @@ Person(user, "User", "End user of system")
 System(app, "Application", "Main application")
 Rel(user, app, "Uses", "HTTPS")
 @enduml
+```
+
+### Mermaid
+Mermaid C4 diagram syntax compatible with Mermaid rendering tools (GitHub, GitLab, Confluence):
+```mermaid
+C4Context
+  title System Context
+
+  Person(user, "User", "End user of system")
+  System(app, "Application", "Main application")
+  Rel(user, app, "Uses", "HTTPS")
 ```
 
 ### Markdown
@@ -309,9 +322,10 @@ Visual exports of current canvas view (excludes controls and minimap).
 | Visual Drag & Drop | ✅ Full support | ❌ No |
 | Real-time Preview | ✅ Immediate | ⚠️ Requires rendering |
 | Export to PlantUML | ✅ Generates syntax | N/A (is PlantUML) |
+| Export to Mermaid | ✅ Generates syntax | ❌ No |
 | Import from JSON | ✅ Full import | ❌ No |
 | Auto-layout | ✅ 4 algorithms | ✅ Built-in |
-| Templates | ✅ 3 pre-built | ⚠️ Manual setup |
+| Relationship Styling | ✅ Arrow + Line style | ⚠️ Limited |
 | Local Storage | ✅ Auto-save 30s | ❌ No persistence |
 | Installation | ✅ None needed | ⚠️ Requires PlantUML |
 | Learning Curve | 🟢 Low (visual) | 🟡 Medium (syntax) |
