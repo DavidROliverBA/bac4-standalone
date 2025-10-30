@@ -15,7 +15,7 @@ const getPropertyName = (type) => {
 
 const useStore = create((set, get) => ({
   // Debug mode - set to true during development to enable logging
-  debugMode: false,
+  debugMode: true, // TEMPORARILY ENABLED TO DEBUG ANNOTATION ISSUE
 
   // Project metadata
   metadata: {
@@ -52,9 +52,21 @@ const useStore = create((set, get) => ({
 
   setCurrentLevel: (level) => set({ currentLevel: level }),
 
-  setSelectedElement: (element) => set({ selectedElement: element, selectedEdge: null }),
+  setSelectedElement: (element) => {
+    const state = get();
+    if (state.debugMode) {
+      console.log('[BAC4 Debug] setSelectedElement called:', element ? { id: element.id, type: element.type } : null);
+    }
+    set({ selectedElement: element, selectedEdge: null });
+  },
 
-  setSelectedEdge: (edge) => set({ selectedEdge: edge, selectedElement: null }),
+  setSelectedEdge: (edge) => {
+    const state = get();
+    if (state.debugMode) {
+      console.log('[BAC4 Debug] setSelectedEdge called:', edge ? { id: edge.id } : null);
+    }
+    set({ selectedEdge: edge, selectedElement: null });
+  },
 
   // Add element
   addElement: (type, element) => {
