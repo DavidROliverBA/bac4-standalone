@@ -29,6 +29,7 @@ function App() {
 
   const {
     getAllElements,
+    getVisibleElements,
     relationships,
     updateElement,
     setSelectedElement,
@@ -46,7 +47,7 @@ function App() {
 
   // Convert store elements to React Flow nodes
   const updateNodesFromStore = useCallback(() => {
-    const elements = getAllElements();
+    const elements = getVisibleElements();
     const newNodes = elements.map((el) => ({
       id: el.id,
       type: 'c4Node',
@@ -57,7 +58,7 @@ function App() {
       },
     }));
     setNodes(newNodes);
-  }, [getAllElements, setNodes]);
+  }, [getVisibleElements, setNodes]);
 
   // Convert store relationships to React Flow edges
   const updateEdgesFromStore = useCallback(() => {
@@ -91,7 +92,7 @@ function App() {
   // Update nodes and edges when store changes
   useEffect(() => {
     updateNodesFromStore();
-  }, [systems, containers, components, people, externalSystems, updateNodesFromStore]);
+  }, [systems, containers, components, people, externalSystems, currentLevel, updateNodesFromStore]);
 
   useEffect(() => {
     updateEdgesFromStore();
