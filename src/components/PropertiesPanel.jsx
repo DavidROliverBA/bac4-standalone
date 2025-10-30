@@ -29,24 +29,46 @@ const PropertiesPanel = () => {
   });
 
   useEffect(() => {
-    if (selectedElement) {
-      setFormData({
-        name: selectedElement.name || '',
-        description: selectedElement.description || '',
-        technology: selectedElement.technology || '',
-        tags: selectedElement.tags?.join(', ') || '',
-      });
+    if (selectedElement && selectedElement.id) {
+      try {
+        setFormData({
+          name: selectedElement.name || '',
+          description: selectedElement.description || '',
+          technology: selectedElement.technology || '',
+          tags: Array.isArray(selectedElement.tags) ? selectedElement.tags.join(', ') : '',
+        });
+      } catch (error) {
+        console.error('[BAC4] Error setting formData for element:', error, selectedElement);
+        // Set safe defaults on error
+        setFormData({
+          name: 'Error loading element',
+          description: '',
+          technology: '',
+          tags: '',
+        });
+      }
     }
   }, [selectedElement?.id]); // Only reset form when element ID changes, not when element data changes
 
   useEffect(() => {
-    if (selectedEdge) {
-      setEdgeFormData({
-        description: selectedEdge.description || '',
-        technology: selectedEdge.technology || '',
-        arrowDirection: selectedEdge.arrowDirection || 'right',
-        lineStyle: selectedEdge.lineStyle || 'solid',
-      });
+    if (selectedEdge && selectedEdge.id) {
+      try {
+        setEdgeFormData({
+          description: selectedEdge.description || '',
+          technology: selectedEdge.technology || '',
+          arrowDirection: selectedEdge.arrowDirection || 'right',
+          lineStyle: selectedEdge.lineStyle || 'solid',
+        });
+      } catch (error) {
+        console.error('[BAC4] Error setting edgeFormData:', error, selectedEdge);
+        // Set safe defaults on error
+        setEdgeFormData({
+          description: 'Error loading relationship',
+          technology: '',
+          arrowDirection: 'right',
+          lineStyle: 'solid',
+        });
+      }
     }
   }, [selectedEdge?.id]); // Only reset form when edge ID changes, not when edge data changes
 
@@ -100,8 +122,9 @@ const PropertiesPanel = () => {
     }
   };
 
-  // Show edge properties if edge is selected
-  if (selectedEdge) {
+  // Show edge properties if edge is selected (and element is not selected)
+  // This handles race conditions where both might be set temporarily
+  if (selectedEdge && !selectedElement) {
     return (
       <aside className="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
@@ -219,6 +242,24 @@ const PropertiesPanel = () => {
     );
   }
 
+  // Validate selectedElement has minimum required properties
+  if (!selectedElement.id || !selectedElement.type) {
+    console.error('[BAC4] Invalid selectedElement:', selectedElement);
+    return (
+      <aside className="w-80 bg-white border-l border-gray-200 p-4">
+        <div className="text-center text-red-500 mt-8">
+          <p className="text-sm">Error: Invalid element data</p>
+          <button
+            onClick={() => setSelectedElement(null)}
+            className="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            Clear Selection
+          </button>
+        </div>
+      </aside>
+    );
+  }
+
   return (
     <aside className="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto">
       <div className="flex items-center justify-between mb-4">
@@ -240,7 +281,7 @@ const PropertiesPanel = () => {
             Type
           </label>
           <div className="px-3 py-2 bg-gray-100 rounded text-sm text-gray-700">
-            {selectedElement.type}
+            {selectedElement.type || 'Unknown'}
           </div>
         </div>
 
