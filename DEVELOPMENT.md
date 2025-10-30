@@ -24,26 +24,59 @@ When debug mode is enabled, you'll see:
 
 ## Common Issues and Solutions
 
-### Issue 1: State Updates Not Reflecting Immediately
+### Issue 1: Event Objects Passed to Save Functions
+
+**Problem**: Event handlers like `onBlur` pass event objects as the first parameter. If a save function accepts parameters, it might accidentally save the event object to the store, causing circular reference errors when localStorage tries to serialize it.
+
+**Symptoms**:
+- "Converting circular structure to JSON" errors
+- References to HTMLInputElement, Window, or React fiber objects
+- Input fields reverting to old values
+
+**Solution**:
+- Separate handlers for different input types
+- Text inputs with onBlur: Save function takes no parameters, always uses current state
+- Selects with onChange: Dedicated handler that updates state and saves with new value
+- Example from PropertiesPanel.jsx:
+
+```javascript
+// CORRECT - Text input pattern
+const handleEdgeSave = () => {
+  if (selectedEdge) {
+    updateRelationship(selectedEdge.id, edgeFormData); // Uses state
+  }
+};
+
+<input onBlur={handleEdgeSave} /> // Event object ignored
+
+// CORRECT - Select pattern
+const handleEdgeSelectChange = (field, value) => {
+  const newFormData = { ...edgeFormData, [field]: value };
+  setEdgeFormData(newFormData);
+  if (selectedEdge) {
+    updateRelationship(selectedEdge.id, newFormData); // Uses fresh value
+  }
+};
+
+<select onChange={(e) => handleEdgeSelectChange('field', e.target.value)} />
+
+// WRONG - Don't mix patterns
+const handleEdgeSave = (updates) => {
+  updateRelationship(id, updates || edgeFormData);
+};
+<input onBlur={handleEdgeSave} /> // Passes event object as updates!
+```
+
+### Issue 2: State Updates Not Reflecting Immediately
 
 **Problem**: React state updates are asynchronous. When you update local state and immediately try to use it, you might get stale data.
 
 **Solution**:
-- Pass the new value directly to functions instead of relying on state
-- Use the callback form of setState when you need the previous state
-- Example from PropertiesPanel.jsx:
+- Create the new state object and use it immediately
+- Don't rely on state being updated in the same function
+- Example shown in Issue 1 above
 
-```javascript
-// WRONG - State might not be updated yet
-handleInputChange('field', newValue);
-setTimeout(handleSave, 0); // Uses potentially stale state
-
-// CORRECT - Pass new value directly
-handleInputChange('field', newValue);
-handleSave({ ...formData, field: newValue }); // Uses fresh value
-```
-
-### Issue 2: Missing Event Handlers
+### Issue 3: Missing Event Handlers
 
 **Problem**: Adding UI features without implementing the underlying state management.
 
@@ -59,7 +92,7 @@ Example: Annotation resize implementation requires:
 - Storing width/height in element data
 - Applying stored dimensions when creating nodes
 
-### Issue 3: Zustand Store Updates Not Triggering Re-renders
+### Issue 4: Zustand Store Updates Not Triggering Re-renders
 
 **Problem**: When updating selectedElement or selectedEdge, the change doesn't propagate to dependent components.
 
