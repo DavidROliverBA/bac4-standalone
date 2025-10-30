@@ -37,7 +37,7 @@ const PropertiesPanel = () => {
         tags: selectedElement.tags?.join(', ') || '',
       });
     }
-  }, [selectedElement]);
+  }, [selectedElement?.id]); // Only reset form when element ID changes, not when element data changes
 
   useEffect(() => {
     if (selectedEdge) {
@@ -48,7 +48,7 @@ const PropertiesPanel = () => {
         lineStyle: selectedEdge.lineStyle || 'solid',
       });
     }
-  }, [selectedEdge]);
+  }, [selectedEdge?.id]); // Only reset form when edge ID changes, not when edge data changes
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
