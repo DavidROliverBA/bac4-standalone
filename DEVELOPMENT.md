@@ -24,7 +24,7 @@ When debug mode is enabled, you'll see:
 
 ## Common Issues and Solutions
 
-### Issue 1: Event Objects Passed to Save Functions
+### Issue 1a: Event Objects Passed to Save Functions
 
 **Problem**: Event handlers like `onBlur` pass event objects as the first parameter. If a save function accepts parameters, it might accidentally save the event object to the store, causing circular reference errors when localStorage tries to serialize it.
 
@@ -66,6 +66,67 @@ const handleEdgeSave = (updates) => {
 };
 <input onBlur={handleEdgeSave} /> // Passes event object as updates!
 ```
+
+### Issue 1b: React Flow Objects with Circular References
+
+**Problem**: React Flow's node and edge objects contain circular references to DOM elements and React internals. Passing these objects (or their properties) directly to the store causes circular JSON errors when localStorage tries to serialize.
+
+**Symptoms**:
+- "Converting circular structure to JSON" when selecting or dragging nodes
+- Errors mentioning Window, HTMLElement, __reactFiber$
+- Selecting annotations or dragging elements triggers errors
+
+**Solution**: Always extract only the primitive values you need, never pass entire objects
+
+```javascript
+// WRONG - Passing React Flow object properties directly
+const onNodeDragStop = (event, node) => {
+  updateElement(el.type, el.id, { position: node.position });
+  // node.position might have circular references
+};
+
+// CORRECT - Extract only primitives
+const onNodeDragStop = (event, node) => {
+  updateElement(el.type, el.id, {
+    position: { x: node.position.x, y: node.position.y }
+  });
+  // Only numbers, guaranteed safe
+};
+
+// WRONG - Passing dimension object directly
+updateElement(el.type, el.id, {
+  width: change.dimensions.width,
+  height: change.dimensions.height
+});
+
+// CORRECT - Convert to primitives
+updateElement(el.type, el.id, {
+  width: Number(change.dimensions.width),
+  height: Number(change.dimensions.height)
+});
+```
+
+**Best Practice**: Add data sanitization as a safety net
+
+```javascript
+// In useLocalStorage.js - sanitize ALL data before saving
+const sanitizeElement = (el) => ({
+  id: el.id,
+  type: el.type,
+  name: el.name || '',
+  position: {
+    x: Number(el.position.x) || 0,
+    y: Number(el.position.y) || 0
+  },
+  // Extract only what you need, convert to primitives
+});
+
+// Apply on save AND load
+const model = sanitizeModel(exportModel());
+localStorage.setItem(KEY, JSON.stringify(model));
+```
+
+This defensive approach works even if React Flow changes its internal structure.
 
 ### Issue 2: useEffect Resetting Forms on Every Update
 
