@@ -59,6 +59,19 @@ const useStore = create((set, get) => ({
       [propertyName]: [...state[propertyName], newElement],
     }));
 
+    // Auto-switch to appropriate C4 level when adding elements
+    const state = get();
+    const currentLevel = state.currentLevel;
+
+    // Ensure the new element will be visible by switching levels if needed
+    if (type === 'container' && (currentLevel === 'context' || currentLevel === 'component' || currentLevel === 'code')) {
+      set({ currentLevel: 'container' });
+    } else if (type === 'component' && (currentLevel === 'context' || currentLevel === 'code')) {
+      set({ currentLevel: 'component' });
+    } else if (type === 'system' && currentLevel === 'code') {
+      set({ currentLevel: 'context' });
+    }
+
     return newElement;
   },
 
