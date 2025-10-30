@@ -1,16 +1,16 @@
 # BAC4 Standalone - Interactive C4 Modelling Tool
 
-An interactive web-based C4 modelling tool built with React that allows architects to create, edit, and visualize C4 diagrams with full interactivity. **Runs completely standalone in any browser - no server required!**
+An interactive web-based C4 modelling tool built with React that allows architects to create, edit, and visualize C4 diagrams with full interactivity. **Runs completely standalone in any browser - no server, no installation, no dependencies!**
 
 ## 🚀 Quick Start
 
-**Want to use it right now without installing anything?**
+**Ready to use immediately:**
 
-1. Build the standalone file: `npm run build:standalone`
-2. Open `bac4-standalone.html` in any browser
+1. Download or build `bac4-standalone.html`
+2. Double-click to open it in any browser
 3. Start creating C4 diagrams!
 
-**That's it!** The 451KB file contains everything you need and works completely offline.
+**That's it!** The ~450KB file contains everything you need and works completely offline.
 
 ---
 
@@ -20,208 +20,204 @@ An interactive web-based C4 modelling tool built with React that allows architec
 
 - **Interactive Canvas**: Drag-and-drop interface for adding and positioning elements
 - **Pan and Zoom**: Navigate large diagrams easily with mouse controls
-- **Visual Distinction**: Different colors and icons for each element type (Systems, Containers, Components, People, External Systems)
+- **Visual Distinction**: Different colors and icons for each element type
 - **Connection Lines**: Auto-routing relationship lines between elements
 - **Click-to-Edit**: Click any element to edit its properties inline
+- **Level-Aware Toolbar**: Shows only relevant element types for current C4 level
 
 ### C4 Level Support
 
-- Toggle between Context, Container, Component, and Code views
-- Level selector in the header for easy navigation
-- Maintains element positions across different views
+- **Context Level**: Shows systems, people, and external systems
+- **Container Level**: Shows systems, containers, people, and external systems
+- **Component Level**: Shows containers, components, and people
+- **Code Level**: Shows components only
+- Automatic level switching when adding elements to ensure visibility
+- Level selector in header for manual navigation
 
 ### Element Management
 
-- **Add Elements**: Via toolbar buttons for:
-  - Software System
-  - Container
-  - Component
-  - Person
-  - External System
-- **Edit Properties**: Name, description, technology, tags
-- **Create Relationships**: Click and drag between elements to create connections
-- **Delete Elements**: With confirmation dialog
+- **Add Elements**: Toolbar shows context-appropriate buttons:
+  - 🟦 Software System
+  - 🟢 Container
+  - 🟨 Component
+  - 🟣 Person
+  - ⚪ External System
+- **Edit Properties**: Name, description, technology, tags, position
+- **Create Relationships**: Drag between elements to create connections
+- **Delete Elements**: With confirmation dialog (auto-removes orphaned relationships)
 
 ### Model Persistence
 
 - **Export Formats**:
-  - JSON (model data)
+  - JSON (full model data)
   - PlantUML C4 syntax
   - Markdown documentation
   - HTML standalone document
   - PNG image
   - SVG image
-- **Import**: Load JSON models
-- **Local Storage Auto-save**: Automatically saves your work every 30 seconds
+- **Import**: Load previously exported JSON models
+- **Local Storage Auto-save**: Automatically saves every 30 seconds + on page close
 
 ### Auto-Layout
 
-Four layout algorithms to arrange your diagrams:
-- **Hierarchical**: Arranges elements in layers by type
-- **Grid**: Organizes elements in a grid pattern
-- **Circular**: Arranges elements in a circle
-- **Force-Directed**: Uses physics simulation to minimize overlap
+Four intelligent layout algorithms:
+- **Hierarchical**: Arranges elements in layers by type (best for C4 hierarchy)
+- **Grid**: Organizes elements in a uniform grid
+- **Circular**: Arranges elements in a circle (best for showing connections)
+- **Force-Directed**: Physics simulation to minimize overlap
 
 ### Templates
 
-Pre-built templates for common patterns:
-- **Flight Operations System**: Aviation domain example
-- **E-Commerce Microservices**: Microservices architecture example
-- **Layered Architecture**: Traditional layered web application
+Pre-built examples to get started:
+- **Flight Operations System**: Aviation domain with FICO system
+- **E-Commerce Microservices**: Microservices architecture pattern
+- **Layered Architecture**: Traditional 3-tier web application
 
-## Getting Started
+---
+
+## Building from Source
 
 ### Prerequisites
 
-**For using the standalone file (recommended):**
-- None! Just a modern web browser
-
-**For development or building from source:**
 - Node.js 18+
 - npm or yarn
 
-### Installation
+### Build Instructions
 
 ```bash
+# Clone the repository
+git clone <repository-url>
+cd bac4-standalone
+
 # Install dependencies
 npm install
 
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Build standalone single-file version
+# Build the standalone HTML file
 npm run build:standalone
 ```
 
-### Deployment Options
+The standalone file `bac4-standalone.html` will be created in the root directory.
 
-#### Option 1: Standalone Single HTML File (Recommended for Simple Use)
+---
 
-**Yes! This app can run completely standalone in any browser!**
+## Usage Guide
 
-After building, you'll find `bac4-standalone.html` (451KB) in the root directory. This file:
-- ✅ Contains everything needed (no dependencies, no server required)
-- ✅ Can be opened directly in any modern browser (Chrome, Firefox, Safari, Edge)
-- ✅ Can be shared via email, USB drive, or cloud storage
-- ✅ Works offline completely
-- ✅ All features work including export, import, and auto-save
+### Adding Elements
 
-**To use:**
-```bash
-npm run build:standalone
-# Double-click bac4-standalone.html or open it in your browser
-```
+1. **Check Current Level**: Look at the toolbar - it shows "Context Level", "Container Level", etc.
+2. **Click Element Button**: Choose from available element types (toolbar shows only relevant options)
+3. **Element Appears**: Added to canvas and level auto-switches if needed
+4. **Position Element**: Drag to desired location
 
-#### Option 2: Static Hosting (For Production Deployment)
+### Creating Relationships
 
-Deploy the `dist/` folder to any static hosting service:
-- **Netlify**: Drag and drop the `dist` folder
-- **Vercel**: Connect your Git repo and deploy
-- **GitHub Pages**: Push `dist` to gh-pages branch
-- **AWS S3**: Upload `dist` contents to an S3 bucket
-- **Cloudflare Pages**: Connect repo or upload folder
+1. **Hover Over Element**: Connection handles appear on all sides
+2. **Click and Drag**: From one element's handle to another element
+3. **Release**: Relationship arrow appears with default description
+4. **Edit Relationship**: Click the arrow to modify description/technology
 
-```bash
-npm run build
-# Upload dist/ folder to your hosting service
-```
+### Editing Properties
 
-#### Option 3: Docker Container
+1. **Click Element**: Right panel shows properties
+2. **Edit Fields**: Name, technology, description, tags
+3. **Auto-save**: Changes save automatically when you tab out
+4. **Delete**: Use delete button with confirmation
 
-Create a `Dockerfile`:
-```dockerfile
-FROM nginx:alpine
-COPY dist/ /usr/share/nginx/html/
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
+### Arranging Your Diagram
 
-```bash
-docker build -t bac4-standalone .
-docker run -p 8080:80 bac4-standalone
-```
+**Manual:**
+- Drag elements to position them precisely
+- Position info shows in properties panel
 
-### Usage
+**Automatic:**
+- Click "Layout" in header
+- Choose algorithm:
+  - Hierarchical (recommended for C4)
+  - Grid (for uniform spacing)
+  - Circular (for relationship emphasis)
+  - Force-Directed (for organic layout)
 
-1. **Start the application**: Navigate to `http://localhost:5173` after running `npm run dev`
+### Exporting Your Work
 
-2. **Add Elements**:
-   - Click buttons in the left toolbar to add elements
-   - Elements appear on the canvas with random positions
+1. **Click "Export"** in header
+2. **Choose Format**:
+   - **JSON**: Save your work to re-import later
+   - **PlantUML**: Generate C4-PlantUML code
+   - **Markdown**: Create documentation
+   - **HTML**: Standalone document with embedded model
+   - **PNG**: Raster image for presentations
+   - **SVG**: Vector image for scaling
+3. **File Downloads**: Automatically with descriptive name
 
-3. **Create Relationships**:
-   - Click and drag from one element to another
-   - The relationship appears as an arrow between them
+### Working with Levels
 
-4. **Edit Properties**:
-   - Click any element to select it
-   - Edit properties in the right panel
-   - Changes save automatically on blur
+The C4 model has 4 abstraction levels. Use the dropdown in the header to switch:
 
-5. **Arrange Elements**:
-   - Drag elements to position them manually
-   - Use the "Layout" button for automatic arrangements
+| Level | Purpose | Shows |
+|-------|---------|-------|
+| **Context** | System landscape | Systems, People, External Systems |
+| **Container** | System decomposition | + Containers |
+| **Component** | Container internals | Containers, Components, People |
+| **Code** | Implementation detail | Components only |
 
-6. **Export Your Work**:
-   - Click "Export" in the header
-   - Choose your desired format
-   - File downloads automatically
+**Tip:** The toolbar automatically shows only relevant element types for your current level!
+
+---
 
 ## Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| Mouse Wheel | Zoom in/out |
-| Click + Drag Canvas | Pan view |
-| Click Element | Select element |
-| Click Canvas | Deselect all |
-| Drag Element | Move element |
-| Drag from Handle | Create relationship |
+| Action | Shortcut |
+|--------|----------|
+| Zoom in/out | Mouse Wheel |
+| Pan view | Click + Drag Canvas |
+| Select element | Click Element |
+| Deselect all | Click Canvas |
+| Move element | Drag Element |
+| Create relationship | Drag from Connection Handle |
+
+---
 
 ## Project Structure
 
 ```
 bac4-standalone/
-├── bac4-standalone.html         # ⭐ Standalone single-file version (build with: npm run build:standalone)
-├── build-standalone.js          # Script to create standalone HTML file
+├── bac4-standalone.html         # ⭐ THE STANDALONE FILE (all you need!)
+├── build-standalone.js          # Build script to create standalone HTML
 ├── src/
 │   ├── components/
-│   │   ├── C4Node.jsx          # Custom node component
-│   │   ├── Header.jsx           # Top navigation bar
-│   │   ├── Toolbar.jsx          # Left sidebar with tools
-│   │   └── PropertiesPanel.jsx  # Right sidebar for editing
+│   │   ├── C4Node.jsx          # Custom node rendering
+│   │   ├── Header.jsx           # Top navigation with export/import/layout
+│   │   ├── Toolbar.jsx          # Level-aware sidebar with element buttons
+│   │   └── PropertiesPanel.jsx  # Right sidebar for editing properties
 │   ├── data/
 │   │   └── templates.js         # Pre-built model templates
 │   ├── hooks/
-│   │   └── useLocalStorage.js   # Local storage auto-save hook
+│   │   └── useLocalStorage.js   # Auto-save hook (30s interval)
 │   ├── utils/
-│   │   ├── exportUtils.js       # Export functionality
-│   │   └── layoutUtils.js       # Auto-layout algorithms
+│   │   ├── exportUtils.js       # 6 export formats
+│   │   └── layoutUtils.js       # 4 auto-layout algorithms
 │   ├── store.js                 # Zustand state management
-│   ├── App.jsx                  # Main application component
-│   └── main.jsx                 # Application entry point
-├── dist/                        # Production build (after: npm run build)
-├── public/
-├── index.html
+│   ├── App.jsx                  # Main application with React Flow
+│   └── main.jsx                 # Entry point
 ├── package.json
 ├── vite.config.js
-├── README.md
-└── STANDALONE-GUIDE.md          # Detailed guide for standalone usage
+└── README.md
 ```
+
+---
 
 ## Technology Stack
 
-- **React 19**: UI framework
-- **React Flow**: Diagram rendering and interaction
-- **Zustand**: State management
-- **Tailwind CSS**: Styling
-- **Lucide React**: Icons
-- **html-to-image**: Image export
-- **file-saver**: File download
-- **Vite**: Build tool
+- **React 19**: Modern UI framework with concurrent features
+- **React Flow 12**: Interactive node-based diagrams
+- **Zustand 4**: Lightweight state management
+- **Tailwind CSS 3**: Utility-first styling
+- **Lucide React**: Beautiful icon set
+- **html-to-image**: Canvas-to-image export
+- **file-saver**: Client-side file downloads
+- **Vite 7**: Lightning-fast build tool
+
+---
 
 ## Data Model
 
@@ -247,13 +243,13 @@ bac4-standalone/
 
 ```json
 {
-  "id": "unique-id",
+  "id": "system-1234567890-abc123def",
   "type": "system|container|component|person|externalSystem",
   "name": "Element Name",
-  "description": "Description text",
-  "technology": "Technology stack",
-  "tags": ["tag1", "tag2"],
-  "position": { "x": 100, "y": 200 }
+  "description": "What this element does",
+  "technology": "Spring Boot, PostgreSQL",
+  "tags": ["backend", "core"],
+  "position": { "x": 350, "y": 200 }
 }
 ```
 
@@ -261,127 +257,205 @@ bac4-standalone/
 
 ```json
 {
-  "id": "rel-id",
+  "id": "rel-1234567890-abc123def",
   "from": "source-element-id",
   "to": "target-element-id",
-  "description": "Relationship description",
-  "technology": "Protocol/Technology",
+  "description": "Makes API calls to",
+  "technology": "REST/HTTPS",
   "animated": false
 }
 ```
 
-## Export Formats
+---
+
+## Export Format Details
 
 ### JSON
-Raw model data that can be imported back into the tool.
+Full model data that can be re-imported. Use this to save your work!
 
 ### PlantUML
-C4-PlantUML syntax compatible with PlantUML tools:
-```
+C4-PlantUML syntax compatible with PlantUML rendering tools:
+```plantuml
 @startuml
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/.../C4_Context.puml
 
-Person(user, "User", "End user")
-System(system, "System", "Core system")
-Rel(user, system, "Uses")
+Person(user, "User", "End user of system")
+System(app, "Application", "Main application")
+Rel(user, app, "Uses", "HTTPS")
 @enduml
 ```
 
 ### Markdown
-Documentation format with tables and descriptions, suitable for wikis or README files.
+Structured documentation with tables, suitable for wikis, GitHub, or README files.
 
 ### HTML
-Standalone HTML document with embedded model, documentation, and PlantUML code.
+Self-contained document with:
+- Model metadata
+- Element documentation
+- Relationship tables
+- Embedded PlantUML code
+- JSON model dump
 
 ### PNG/SVG
-Image exports of the current canvas view.
+Visual exports of current canvas view (excludes controls and minimap).
 
-## Features Comparison with C4-PlantUML
+---
+
+## Features vs C4-PlantUML
 
 | Feature | BAC4 Standalone | C4-PlantUML |
 |---------|------------------|-------------|
-| Interactive Editing | ✅ Yes | ❌ No |
-| Visual Drag & Drop | ✅ Yes | ❌ No |
-| Real-time Preview | ✅ Yes | ⚠️ Requires external tool |
-| Export to PlantUML | ✅ Yes | N/A |
-| Import from JSON | ✅ Yes | ❌ No |
+| Interactive Editing | ✅ Live editing | ❌ Text-based |
+| Visual Drag & Drop | ✅ Full support | ❌ No |
+| Real-time Preview | ✅ Immediate | ⚠️ Requires rendering |
+| Export to PlantUML | ✅ Generates syntax | N/A (is PlantUML) |
+| Import from JSON | ✅ Full import | ❌ No |
 | Auto-layout | ✅ 4 algorithms | ✅ Built-in |
-| Templates | ✅ Yes | ⚠️ Manual |
-| Local Storage | ✅ Auto-save | ❌ No |
-| Learning Curve | 🟢 Low | 🟡 Medium |
+| Templates | ✅ 3 pre-built | ⚠️ Manual setup |
+| Local Storage | ✅ Auto-save 30s | ❌ No persistence |
+| Installation | ✅ None needed | ⚠️ Requires PlantUML |
+| Learning Curve | 🟢 Low (visual) | 🟡 Medium (syntax) |
+| Offline Usage | ✅ 100% offline | ✅ Offline |
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+---
 
 ## Best Practices
 
 ### Diagram Organization
 
-1. **Context Diagrams**: Keep to 5-9 systems maximum
+1. **Context Diagrams**: Keep to 5-9 systems maximum for clarity
 2. **Container Diagrams**: Focus on one system at a time
-3. **Component Diagrams**: Show major structural components only
-4. **Code Diagrams**: Use sparingly, focus on complex areas
+3. **Component Diagrams**: Show major structural components, not every class
+4. **Code Diagrams**: Use sparingly, only for complex areas
 
 ### Element Naming
 
-- Use clear, descriptive names
-- Include technology stack in brackets for containers/components
-- Keep descriptions concise but informative
-- Use consistent naming conventions
+- Use clear, business-focused names (not technical jargon)
+- Include technology stack in technology field, not name
+- Keep descriptions concise (1-2 sentences)
+- Use consistent naming conventions across diagrams
 
 ### Relationship Documentation
 
-- Always add descriptions to relationships
-- Specify protocols/technologies where relevant
-- Use animated lines for asynchronous communication
+- Always add meaningful descriptions ("sends email to", not just "uses")
+- Specify protocols/technologies where relevant (REST, gRPC, etc.)
+- Use animated lines to indicate asynchronous communication
 
 ### Version Control
 
-- Export models as JSON regularly
+- Export models as JSON regularly (use version in filename)
 - Commit JSON files to your repository
-- Include generated documentation in commits
-- Tag major versions
+- Include generated PlantUML/Markdown in commits
+- Tag major diagram versions
+- Use descriptive commit messages
+
+---
 
 ## Troubleshooting
 
+### Elements Not Appearing
+
+**Issue**: Clicked toolbar button but nothing shows on canvas
+**Solution**: Check the level dropdown - you might be at wrong C4 level. The app auto-switches levels now, but older sessions might need manual switching.
+
 ### Canvas Not Responding
-- Try refreshing the page
-- Check browser console for errors
-- Clear local storage if data seems corrupted
+
+**Issue**: Can't drag, zoom, or click elements
+**Solution**:
+1. Refresh the page
+2. Check browser console (F12) for errors
+3. Clear local storage if data seems corrupted
 
 ### Export Not Working
-- Ensure pop-up blocker is disabled
-- Check browser permissions for downloads
-- Try a different export format
+
+**Issue**: Export button doesn't download file
+**Solution**:
+1. Disable pop-up blocker
+2. Check browser download permissions
+3. Try different export format
+4. Check browser console for errors
 
 ### Elements Overlapping
-- Use auto-layout to reorganize
-- Manually drag elements apart
-- Increase zoom level for more space
+
+**Issue**: Too many elements in same spot
+**Solution**:
+1. Use auto-layout (Layout → Hierarchical)
+2. Manually drag elements apart
+3. Zoom out for better overview
+4. Consider splitting into multiple diagrams
 
 ### Performance Issues
-- Keep diagrams under 50 elements
-- Split large models into multiple diagrams
-- Use level filtering to show relevant elements only
+
+**Issue**: Slow rendering or lag
+**Solution**:
+1. Keep diagrams under 50 elements
+2. Split large models into multiple C4 levels
+3. Use level filtering (show only what's needed)
+4. Avoid excessive relationships
+5. Try simpler auto-layout (Grid instead of Force-Directed)
+
+### Local Storage Full
+
+**Issue**: "Quota exceeded" error
+**Solution**:
+1. Export model as JSON first (backup!)
+2. Clear browser local storage
+3. Re-import the JSON
+4. Consider exporting more frequently
+
+---
+
+## Distribution
+
+Since this is a **standalone HTML file**, you can distribute it by:
+
+✅ **Email**: Attach the 450KB file
+✅ **USB Drive**: Copy and share
+✅ **Cloud Storage**: Dropbox, Google Drive, OneDrive
+✅ **Intranet**: Upload to shared drive
+✅ **Version Control**: Commit to repository
+✅ **Wiki**: Link from internal documentation
+
+**Security Note**: The file contains only HTML, CSS, and JavaScript. No server communication, no data transmission, 100% client-side.
+
+---
+
+## Contributing
+
+Contributions welcome! To contribute:
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Build and test: `npm run build:standalone`
+5. Commit changes (`git commit -m 'Add amazing feature'`)
+6. Push to branch (`git push origin feature/amazing-feature`)
+7. Open Pull Request
+
+---
 
 ## License
 
-MIT License - feel free to use this tool for any purpose.
+MIT License - Feel free to use, modify, and distribute this tool for any purpose.
+
+---
 
 ## Acknowledgments
 
-- Built with [React Flow](https://reactflow.dev/)
+- Built with [React Flow](https://reactflow.dev/) for diagram rendering
 - Inspired by [C4 Model](https://c4model.com/) by Simon Brown
 - Icons from [Lucide](https://lucide.dev/)
+- Styling with [Tailwind CSS](https://tailwindcss.com/)
+
+---
 
 ## Support
 
 For issues, questions, or suggestions:
 - Open an issue on GitHub
-- Submit a pull request
-- Check existing documentation
+- Check this README and documentation
+- Review existing issues/PRs
 
 ---
 
-**Built with ❤️ for Software Architects**
+**Built for Software Architects who want visual, interactive C4 diagrams without the complexity of traditional diagramming tools.**
