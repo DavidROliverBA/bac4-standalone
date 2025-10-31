@@ -3,6 +3,7 @@ import { Download, Upload, FileJson, Settings, FileImage, FileCode, FileText, La
 import useStore from '../store';
 import { exportAsPNG, exportAsSVG, generatePlantUML, generateMermaid, generateMarkdown, exportAsHTML } from '../utils/exportUtils';
 import { applyHierarchicalLayout, applyGridLayout, applyCircularLayout, applyForceLayout } from '../utils/layoutUtils';
+import { exportToStructurizr, importFromStructurizr } from '../utils/structurizrUtils';
 
 const Header = () => {
   const { metadata, setMetadata, currentLevel, setCurrentLevel, exportModel, importModel, clearAll, getAllElements, updateElement, relationships } = useStore();
@@ -58,15 +59,39 @@ const Header = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
-          const model = JSON.parse(e.target.result);
-          importModel(model);
-          alert('Model imported successfully!');
+          const data = JSON.parse(e.target.result);
+
+          // Detect if this is a Structurizr workspace or BAC4 model
+          if (data.model && (data.views || data.documentation)) {
+            // This looks like a Structurizr workspace
+            const bac4Model = importFromStructurizr(data);
+            importModel(bac4Model);
+            alert('Structurizr workspace imported successfully!');
+          } else {
+            // This is a BAC4 model
+            importModel(data);
+            alert('Model imported successfully!');
+          }
         } catch (error) {
           alert('Error importing model: ' + error.message);
         }
       };
       reader.readAsText(file);
     }
+  };
+
+  const handleExportStructurizr = () => {
+    const model = exportModel();
+    const structurizrWorkspace = exportToStructurizr(model);
+    const dataStr = JSON.stringify(structurizrWorkspace, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+    const exportFileDefaultName = `${metadata.name.replace(/\s+/g, '-').toLowerCase()}-structurizr.json`;
+
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+    setShowExportMenu(false);
   };
 
   const handleClearAll = () => {
@@ -191,8 +216,16 @@ const Header = () => {
                       className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center gap-2"
                     >
                       <FileJson className="w-4 h-4" />
-                      JSON
+                      JSON (BAC4)
                     </button>
+                    <button
+                      onClick={handleExportStructurizr}
+                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center gap-2"
+                    >
+                      <FileJson className="w-4 h-4" />
+                      Structurizr JSON
+                    </button>
+                    <hr className="my-1" />
                     <button
                       onClick={handleExportPlantUML}
                       className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center gap-2"
