@@ -22,6 +22,34 @@ const nodeTypes = {
   c4Node: C4Node,
 };
 
+// Calculate optimal handles based on node positions for shortest edge path
+const getOptimalHandles = (sourceNode, targetNode) => {
+  if (!sourceNode?.position || !targetNode?.position) {
+    return { sourceHandle: 'bottom', targetHandle: 'top' };
+  }
+
+  const dx = targetNode.position.x - sourceNode.position.x;
+  const dy = targetNode.position.y - sourceNode.position.y;
+
+  // Use horizontal handles if nodes are more side-by-side than stacked
+  if (Math.abs(dx) > Math.abs(dy)) {
+    // Target is to the right of source
+    if (dx > 0) {
+      return { sourceHandle: 'right', targetHandle: 'left' };
+    }
+    // Target is to the left of source
+    return { sourceHandle: 'left', targetHandle: 'right' };
+  }
+
+  // Use vertical handles if nodes are more stacked
+  // Target is below source
+  if (dy > 0) {
+    return { sourceHandle: 'bottom', targetHandle: 'top' };
+  }
+  // Target is above source
+  return { sourceHandle: 'top', targetHandle: 'bottom' };
+};
+
 function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -74,6 +102,7 @@ function App() {
   }, [systems, containers, components, people, externalSystems, currentLevel, getVisibleElements, setNodes]);
 
   useEffect(() => {
+    const elements = getVisibleElements();
     const newEdges = relationships.map((rel) => {
       // Determine arrow markers based on arrowDirection
       const arrowDirection = rel.arrowDirection || 'right';
@@ -96,10 +125,17 @@ function App() {
         strokeDasharray = '2,2';
       }
 
+      // Calculate optimal handles based on node positions
+      const sourceNode = elements.find((el) => el.id === rel.from);
+      const targetNode = elements.find((el) => el.id === rel.to);
+      const { sourceHandle, targetHandle } = getOptimalHandles(sourceNode, targetNode);
+
       return {
         id: rel.id,
         source: rel.from,
         target: rel.to,
+        sourceHandle,
+        targetHandle,
         label: rel.description || '',
         type: 'smoothstep',
         animated: rel.animated || false,
@@ -122,7 +158,7 @@ function App() {
       };
     });
     setEdges(newEdges);
-  }, [relationships, setEdges]);
+  }, [relationships, setEdges, getVisibleElements, systems, containers, components, people, externalSystems]);
 
   // Handle node drag
   const onNodeDragStop = useCallback(
