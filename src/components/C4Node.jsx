@@ -59,7 +59,7 @@ const C4Node = ({ data, selected }) => {
 
   return (
     <div className={`${getNodeStyle()} ${selected ? 'ring-4 ring-blue-400' : ''}`}>
-      <Handle type="target" position={Position.Top} className="w-3 h-3" />
+      <Handle type="target" position={Position.Top} id="top" className="w-3 h-3" />
 
       <div className="flex items-start gap-2">
         <div className="mt-1">{getIcon()}</div>
@@ -83,9 +83,9 @@ const C4Node = ({ data, selected }) => {
         </div>
       </div>
 
-      <Handle type="source" position={Position.Bottom} className="w-3 h-3" />
-      <Handle type="source" position={Position.Right} className="w-3 h-3" />
-      <Handle type="target" position={Position.Left} className="w-3 h-3" />
+      <Handle type="source" position={Position.Bottom} id="bottom" className="w-3 h-3" />
+      <Handle type="source" position={Position.Right} id="right" className="w-3 h-3" />
+      <Handle type="target" position={Position.Left} id="left" className="w-3 h-3" />
     </div>
   );
 };
