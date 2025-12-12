@@ -18,6 +18,9 @@ What if we could combine the best of both worlds: the visual immediacy of drag-a
 
 BAC4 Standalone is an interactive C4 modelling tool that runs entirely in your browser as a single HTML file. No server, no installation, no dependencies—just open it and start designing.
 
+![BAC4 Empty Canvas](e2e/docs/screenshots/empty-canvas-chromium-darwin.png)
+*The BAC4 interface: toolbar on the left, canvas in the center, and properties panel on the right*
+
 ### What Makes It Different
 
 **1. True Standalone Architecture**
@@ -37,6 +40,15 @@ BAC4 Standalone is an interactive C4 modelling tool that runs entirely in your b
 - Context-aware toolbar shows only relevant element types
 - Auto-switching between abstraction levels
 - Intelligent auto-layout algorithms
+
+### C4 Element Types
+
+BAC4 supports all standard C4 element types with distinct visual styling:
+
+| Software System | Person | External System | Container | Component |
+|:---------------:|:------:|:---------------:|:---------:|:---------:|
+| ![System](e2e/docs/screenshots/node-system-chromium-darwin.png) | ![Person](e2e/docs/screenshots/node-person-chromium-darwin.png) | ![External](e2e/docs/screenshots/node-external-system-chromium-darwin.png) | ![Container](e2e/docs/screenshots/node-container-chromium-darwin.png) | ![Component](e2e/docs/screenshots/node-component-chromium-darwin.png) |
+| *Blue* | *Purple* | *Gray* | *Green* | *Yellow* |
 
 **4. Architecture-Focused Features**
 - Level-aware element visibility (Context → Container → Component → Code)
@@ -105,6 +117,11 @@ The tool enforces C4 level semantics:
 
 When you add an element, the system automatically switches to an appropriate level for visibility. The toolbar dynamically shows only relevant element types for your current level.
 
+| Context Level | Container Level | Component Level |
+|:-------------:|:---------------:|:---------------:|
+| ![Context Toolbar](e2e/docs/screenshots/toolbar-context-chromium-darwin.png) | ![Container Toolbar](e2e/docs/screenshots/toolbar-container-chromium-darwin.png) | ![Component Toolbar](e2e/docs/screenshots/toolbar-component-chromium-darwin.png) |
+| *Systems, People, External Systems* | *+ Containers* | *Containers, Components, People* |
+
 ### Export Pipeline
 
 Each export format follows a consistent pipeline:
@@ -148,6 +165,9 @@ C4Container
 
 **PNG/SVG Export**: Visual snapshots using html-to-image library for presentations and documentation.
 
+![Export Menu](e2e/docs/screenshots/export-menu-open-chromium-darwin.png)
+*Seven export formats available from the Export dropdown*
+
 ### Auto-Layout Algorithms
 
 Four layout algorithms handle different scenarios:
@@ -156,6 +176,9 @@ Four layout algorithms handle different scenarios:
 2. **Grid**: Uniform spacing for simple, organized diagrams
 3. **Circular**: Emphasizes connections and communication patterns
 4. **Force-Directed**: Physics simulation minimizing overlap—best for organic, relationship-heavy diagrams
+
+![Layout Menu](e2e/docs/screenshots/layout-menu-open-chromium-darwin.png)
+*Auto-layout options for organizing your diagram*
 
 ## Use Cases for Solution Architects
 
@@ -317,6 +340,9 @@ Let's model a simple e-commerce system:
 
 **Result**: High-level system context in under 2 minutes.
 
+![Context Diagram Example](e2e/docs/screenshots/context-diagram-chromium-darwin.png)
+*A context diagram with connected elements*
+
 ---
 
 ### Step 2: Container Diagram
@@ -391,6 +417,9 @@ Don't just draw lines—add:
 
 This metadata enriches exports and clarifies communication patterns.
 
+![Properties Panel](e2e/docs/screenshots/properties-panel-element-chromium-darwin.png)
+*The properties panel for editing element details*
+
 ### 6. Use Auto-Layout as a Starting Point
 
 Start with Hierarchical layout, then manually adjust:
@@ -423,6 +452,9 @@ Manual refinement after auto-layout gives professional results quickly.
 - React Flow handles canvas rendering
 - Auto-save throttled to prevent performance impact
 - Layout algorithms optimized for typical C4 diagram sizes
+
+![Canvas Controls](e2e/docs/screenshots/canvas-controls-chromium-darwin.png)
+*Built-in zoom controls and minimap for easy navigation*
 
 ### Data Persistence
 
@@ -513,6 +545,9 @@ Whether you're facilitating workshops, documenting legacy systems, or maintainin
 3. **Create**: Start with a Context diagram
 4. **Export**: Generate PlantUML, Mermaid, or PNG
 5. **Integrate**: Add to your documentation workflow
+
+![Header Bar](e2e/docs/screenshots/header-chromium-darwin.png)
+*The header bar with title editing, level selector, and action buttons*
 
 No installation. No configuration. No complexity.
 
