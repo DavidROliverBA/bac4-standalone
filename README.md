@@ -1,6 +1,6 @@
 # BAC4 Standalone - Interactive C4 Modelling Tool
 
-An interactive web-based C4 modelling tool built with React that allows architects to create, edit, and visualize C4 diagrams with full interactivity. **Runs completely standalone in any browser - no server, no installation, no dependencies!**
+An interactive web-based C4 modelling tool built with React that allows architects to create, edit, and visualise C4 diagrams with full interactivity. **Runs completely standalone in any browser - no server, no installation, no dependencies!**
 
 ## 🚀 Quick Start
 
@@ -10,7 +10,7 @@ An interactive web-based C4 modelling tool built with React that allows architec
 2. Double-click to open it in any browser
 3. Start creating C4 diagrams!
 
-**That's it!** The ~450KB file contains everything you need and works completely offline.
+**That's it!** The ~477KB file contains everything you need and works entirely offline.
 
 ---
 
@@ -20,7 +20,7 @@ An interactive web-based C4 modelling tool built with React that allows architec
 
 - **Interactive Canvas**: Drag-and-drop interface for adding and positioning elements
 - **Pan and Zoom**: Navigate large diagrams easily with mouse controls
-- **Visual Distinction**: Different colors and icons for each element type
+- **Visual Distinction**: Different colours and icons for each element type
 - **Connection Lines**: Auto-routing relationship lines between elements
 - **Click-to-Edit**: Click any element to edit its properties inline
 - **Level-Aware Toolbar**: Shows only relevant element types for current C4 level
@@ -44,7 +44,7 @@ An interactive web-based C4 modelling tool built with React that allows architec
   - ⚪ External System
 - **Edit Properties**: Name, description, technology, tags, position
 - **Create Relationships**: Drag between elements to create connections
-- **Delete Elements**: With confirmation dialog (auto-removes orphaned relationships)
+- **Delete Elements**: With confirmation dialogue (auto-removes orphaned relationships)
 
 ### Model Persistence
 
@@ -65,11 +65,11 @@ An interactive web-based C4 modelling tool built with React that allows architec
 
 Four intelligent layout algorithms:
 - **Hierarchical**: Arranges elements in layers by type (best for C4 hierarchy)
-- **Grid**: Organizes elements in a uniform grid
+- **Grid**: Organises elements in a uniform grid
 - **Circular**: Arranges elements in a circle (best for showing connections)
-- **Force-Directed**: Physics simulation to minimize overlap
+- **Force-Directed**: Physics simulation to minimise overlap
 
-### Relationship Customization
+### Relationship Customisation
 
 - **Arrow Direction**: Left (←), Right (→), Both (↔), None (—)
 - **Line Style**: Solid, Dashed, Dotted
@@ -130,10 +130,10 @@ The standalone file `bac4-standalone.html` will be created in the root directory
 
 **Manual:**
 - Drag elements to position them precisely
-- Position info shows in properties panel
+- Position info shows in the properties panel
 
 **Automatic:**
-- Click "Layout" in header
+- Click "Layout" in the header
 - Choose algorithm:
   - Hierarchical (recommended for C4)
   - Grid (for uniform spacing)
@@ -359,7 +359,7 @@ Export to [Draw.io/diagrams.net](https://app.diagrams.net/) format:
 
 ## Best Practices
 
-### Diagram Organization
+### Diagram Organisation
 
 1. **Context Diagrams**: Keep to 5-9 systems maximum for clarity
 2. **Container Diagrams**: Focus on one system at a time
@@ -369,7 +369,7 @@ Export to [Draw.io/diagrams.net](https://app.diagrams.net/) format:
 ### Element Naming
 
 - Use clear, business-focused names (not technical jargon)
-- Include technology stack in technology field, not name
+- Include technology stack in the technology field, not the name
 - Keep descriptions concise (1-2 sentences)
 - Use consistent naming conventions across diagrams
 
@@ -393,8 +393,8 @@ Export to [Draw.io/diagrams.net](https://app.diagrams.net/) format:
 
 ### Elements Not Appearing
 
-**Issue**: Clicked toolbar button but nothing shows on canvas
-**Solution**: Check the level dropdown - you might be at wrong C4 level. The app auto-switches levels now, but older sessions might need manual switching.
+**Issue**: Clicked the toolbar button, but nothing shows onthe  canvas
+**Solution**: Check the level dropdown - you might be at the wrong C4 level. The app auto-switches levels now, but older sessions might need manual switching.
 
 ### Canvas Not Responding
 
@@ -406,20 +406,20 @@ Export to [Draw.io/diagrams.net](https://app.diagrams.net/) format:
 
 ### Export Not Working
 
-**Issue**: Export button doesn't download file
+**Issue**: Export button doesn't download the file
 **Solution**:
 1. Disable pop-up blocker
 2. Check browser download permissions
-3. Try different export format
-4. Check browser console for errors
+3. Try a different export format
+4. Check the browser console for errors
 
 ### Elements Overlapping
 
-**Issue**: Too many elements in same spot
+**Issue**: Too many elements in the same spot
 **Solution**:
 1. Use auto-layout (Layout → Hierarchical)
 2. Manually drag elements apart
-3. Zoom out for better overview
+3. Zoom out for a better overview
 4. Consider splitting into multiple diagrams
 
 ### Performance Issues
