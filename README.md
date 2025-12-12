@@ -6,7 +6,7 @@ An interactive web-based C4 modelling tool built with React that allows architec
 
 **Ready to use immediately:**
 
-1. Download or build `bac4-standalone.html`
+1. Download `bac4-standalone.html`
 2. Double-click to open it in any browser
 3. Start creating C4 diagrams!
 
