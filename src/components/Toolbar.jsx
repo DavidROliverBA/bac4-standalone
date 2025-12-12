@@ -47,18 +47,9 @@ const Toolbar = () => {
     tool.visibleAtLevels.includes(currentLevel)
   );
 
-  const handleAddElement = (type) => {
-    const element = {
-      name: `New ${type.charAt(0).toUpperCase() + type.slice(1)}`,
-      description: '',
-      technology: '',
-      position: {
-        x: Math.random() * 400 + 100,
-        y: Math.random() * 300 + 100,
-      },
-    };
-
-    addElement(type, element);
+  const onDragStart = (event, type) => {
+    event.dataTransfer.setData('application/c4-element-type', type);
+    event.dataTransfer.effectAllowed = 'move';
   };
 
   // Get level display name
@@ -86,14 +77,15 @@ const Toolbar = () => {
           visibleTools.map((tool) => {
             const Icon = tool.icon;
             return (
-              <button
+              <div
                 key={tool.type}
-                onClick={() => handleAddElement(tool.type)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border-2 transition-colors ${tool.color}`}
+                draggable
+                onDragStart={(e) => onDragStart(e, tool.type)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border-2 transition-colors cursor-grab active:cursor-grabbing ${tool.color}`}
               >
                 <Icon className="w-5 h-5" />
                 <span className="text-sm font-medium">{tool.label}</span>
-              </button>
+              </div>
             );
           })
         ) : (
@@ -108,10 +100,10 @@ const Toolbar = () => {
           Quick Tips
         </h3>
         <ul className="text-xs text-blue-800 space-y-1">
+          <li>• Drag elements to canvas to add</li>
           <li>• Click elements to edit properties</li>
           <li>• Drag between elements to create relationships</li>
           <li>• Use mouse wheel to zoom</li>
-          <li>• Drag canvas to pan</li>
         </ul>
       </div>
     </aside>

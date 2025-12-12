@@ -234,6 +234,38 @@ function App() {
     setSelectedEdge(null);
   }, [setSelectedElement, setSelectedEdge]);
 
+  // Handle drag over to allow drop
+  const onDragOver = useCallback((event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  // Handle drop to create new element
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+
+      const type = event.dataTransfer.getData('application/c4-element-type');
+      if (!type || !reactFlowInstance) return;
+
+      // Convert screen position to flow position
+      const position = reactFlowInstance.screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+
+      const element = {
+        name: `New ${type.charAt(0).toUpperCase() + type.slice(1)}`,
+        description: '',
+        technology: '',
+        position,
+      };
+
+      useStore.getState().addElement(type, element);
+    },
+    [reactFlowInstance]
+  );
+
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       <Header />
@@ -252,6 +284,8 @@ function App() {
             onNodeClick={onNodeClick}
             onEdgeClick={onEdgeClick}
             onPaneClick={onPaneClick}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
             onInit={setReactFlowInstance}
             nodeTypes={nodeTypes}
             fitView

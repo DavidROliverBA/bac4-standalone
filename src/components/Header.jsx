@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Download, Upload, FileJson, Settings, FileImage, FileCode, FileText, Layout } from 'lucide-react';
 import useStore from '../store';
-import { exportAsPNG, exportAsSVG, generatePlantUML, generateMermaid, generateMarkdown, exportAsHTML } from '../utils/exportUtils';
+import { exportAsPNG, exportAsSVG, generatePlantUML, generateMermaid, generateMarkdown, exportAsHTML, exportAsDrawio } from '../utils/exportUtils';
 import { applyHierarchicalLayout, applyGridLayout, applyCircularLayout, applyForceLayout } from '../utils/layoutUtils';
 import { exportToStructurizr, importFromStructurizr } from '../utils/structurizrUtils';
 
@@ -155,6 +155,12 @@ const Header = () => {
     setShowExportMenu(false);
   };
 
+  const handleExportDrawio = () => {
+    const model = exportModel();
+    exportAsDrawio(model);
+    setShowExportMenu(false);
+  };
+
   const applyLayout = (layoutFn) => {
     const elements = getAllElements();
     const layoutedElements = layoutFn(elements, relationships);
@@ -268,6 +274,14 @@ const Header = () => {
                     >
                       <FileImage className="w-4 h-4" />
                       SVG Image
+                    </button>
+                    <hr className="my-1" />
+                    <button
+                      onClick={handleExportDrawio}
+                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center gap-2"
+                    >
+                      <FileCode className="w-4 h-4" />
+                      Draw.io (.drawio)
                     </button>
                   </div>
                 </div>

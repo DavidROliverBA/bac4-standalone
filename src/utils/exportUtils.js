@@ -370,3 +370,185 @@ const markdownToHTML = (markdown) => {
     })
     .join('\n');
 };
+
+/**
+ * Escape XML special characters
+ */
+const escapeXml = (str) => {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+};
+
+/**
+ * Get C4 element styling for draw.io
+ */
+const getDrawioStyle = (type) => {
+  const baseStyle = 'rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;spacingTop=8;';
+
+  switch (type) {
+    case 'person':
+      return `${baseStyle}fillColor=#e1d5e7;strokeColor=#9673a6;`;
+    case 'system':
+      return `${baseStyle}fillColor=#dae8fc;strokeColor=#6c8ebf;`;
+    case 'externalSystem':
+      return `${baseStyle}fillColor=#f5f5f5;strokeColor=#666666;dashed=1;`;
+    case 'container':
+      return `${baseStyle}fillColor=#d5e8d4;strokeColor=#82b366;`;
+    case 'component':
+      return `${baseStyle}fillColor=#fff2cc;strokeColor=#d6b656;`;
+    default:
+      return `${baseStyle}fillColor=#ffffff;strokeColor=#000000;`;
+  }
+};
+
+/**
+ * Get edge style for draw.io based on relationship properties
+ */
+const getDrawioEdgeStyle = (rel) => {
+  let style = 'edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;';
+
+  // Line style
+  if (rel.lineStyle === 'dashed') {
+    style += 'dashed=1;dashPattern=8 8;';
+  } else if (rel.lineStyle === 'dotted') {
+    style += 'dashed=1;dashPattern=2 2;';
+  }
+
+  // Arrow direction
+  if (rel.arrowDirection === 'left') {
+    style += 'startArrow=classic;endArrow=none;';
+  } else if (rel.arrowDirection === 'both') {
+    style += 'startArrow=classic;endArrow=classic;';
+  } else {
+    style += 'startArrow=none;endArrow=classic;';
+  }
+
+  style += 'strokeColor=#666666;';
+
+  return style;
+};
+
+/**
+ * Generate draw.io XML format from model
+ */
+export const generateDrawio = (model) => {
+  const timestamp = new Date().toISOString();
+  const diagramId = `diagram-${Date.now()}`;
+
+  // Collect all elements
+  const allElements = [
+    ...(model.people || []),
+    ...(model.systems || []),
+    ...(model.externalSystems || []),
+    ...(model.containers || []),
+    ...(model.components || []),
+  ];
+
+  // Calculate diagram bounds
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  allElements.forEach(el => {
+    const x = el.position?.x || 0;
+    const y = el.position?.y || 0;
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x + 220);
+    maxY = Math.max(maxY, y + 120);
+  });
+
+  // Add padding
+  const offsetX = minX < 50 ? 50 - minX : 0;
+  const offsetY = minY < 50 ? 50 - minY : 0;
+  const pageWidth = Math.max(1100, maxX + offsetX + 100);
+  const pageHeight = Math.max(850, maxY + offsetY + 100);
+
+  // Build XML
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="BAC4" modified="${timestamp}" agent="BAC4 C4 Modelling Tool" version="1.0" type="device">
+  <diagram name="${escapeXml(model.metadata?.name || 'C4 Diagram')}" id="${diagramId}">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="${pageWidth}" pageHeight="${pageHeight}" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+`;
+
+  // Map to track element IDs for edges
+  const elementIdMap = new Map();
+  let cellId = 2;
+
+  // Generate type label
+  const getTypeLabel = (type) => {
+    switch (type) {
+      case 'person': return '[Person]';
+      case 'system': return '[Software System]';
+      case 'externalSystem': return '[External System]';
+      case 'container': return '[Container]';
+      case 'component': return '[Component]';
+      default: return '';
+    }
+  };
+
+  // Add elements as mxCell nodes
+  allElements.forEach(el => {
+    const id = `cell-${cellId++}`;
+    elementIdMap.set(el.id, id);
+
+    const x = (el.position?.x || 0) + offsetX;
+    const y = (el.position?.y || 0) + offsetY;
+    const width = 220;
+    const height = 120;
+    const style = getDrawioStyle(el.type);
+
+    // Build cell value with C4 formatting
+    const typeLabel = getTypeLabel(el.type);
+    const tech = el.technology ? `[${escapeXml(el.technology)}]` : '';
+    const desc = el.description ? `&lt;br&gt;&lt;font style=&quot;font-size: 10px&quot;&gt;${escapeXml(el.description)}&lt;/font&gt;` : '';
+
+    const value = `&lt;b&gt;${escapeXml(el.name)}&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 10px; color: #666666;&quot;&gt;${typeLabel}${tech ? '&lt;br&gt;' + tech : ''}&lt;/font&gt;${desc}`;
+
+    xml += `        <mxCell id="${id}" value="${value}" style="${style}" vertex="1" parent="1">
+          <mxGeometry x="${x}" y="${y}" width="${width}" height="${height}" as="geometry" />
+        </mxCell>
+`;
+  });
+
+  // Add relationships as edge mxCell nodes
+  (model.relationships || []).forEach(rel => {
+    const id = `edge-${cellId++}`;
+    const sourceId = elementIdMap.get(rel.from);
+    const targetId = elementIdMap.get(rel.to);
+
+    if (!sourceId || !targetId) return;
+
+    const style = getDrawioEdgeStyle(rel);
+    const label = rel.description || '';
+    const tech = rel.technology ? `[${escapeXml(rel.technology)}]` : '';
+    const value = tech ? `${escapeXml(label)}&lt;br&gt;&lt;font style=&quot;font-size: 9px&quot;&gt;${tech}&lt;/font&gt;` : escapeXml(label);
+
+    xml += `        <mxCell id="${id}" value="${value}" style="${style}" edge="1" parent="1" source="${sourceId}" target="${targetId}">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+`;
+  });
+
+  xml += `      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>`;
+
+  return xml;
+};
+
+/**
+ * Export diagram as draw.io file
+ */
+export const exportAsDrawio = (model) => {
+  const drawioXml = generateDrawio(model);
+  const blob = new Blob([drawioXml], { type: 'application/xml' });
+  const filename = `${(model.metadata?.name || 'c4-diagram').replace(/\s+/g, '-').toLowerCase()}.drawio`;
+  saveAs(blob, filename);
+};
