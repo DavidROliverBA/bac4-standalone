@@ -60,29 +60,8 @@ BAC4 supports all standard C4 element types with distinct visual styling:
 
 ### Component Overview
 
-```
-┌─────────────────────────────────────────────────────┐
-│                   React 19 App                       │
-├─────────────────────────────────────────────────────┤
-│  ┌──────────┐  ┌──────────┐  ┌─────────────────┐  │
-│  │ Toolbar  │  │ React    │  │ Properties      │  │
-│  │ (Add)    │──│ Flow 12  │──│ Panel (Edit)    │  │
-│  └──────────┘  │ Canvas   │  └─────────────────┘  │
-│                 └────┬─────┘                        │
-│                      │                              │
-│                 ┌────▼─────┐                        │
-│                 │ Zustand  │                        │
-│                 │  Store   │                        │
-│                 └────┬─────┘                        │
-│                      │                              │
-│       ┌──────────────┼──────────────┐              │
-│       ▼              ▼               ▼              │
-│  ┌─────────┐  ┌──────────┐  ┌────────────┐        │
-│  │ Auto-   │  │ Export   │  │ Local      │        │
-│  │ Layout  │  │ Utils    │  │ Storage    │        │
-│  └─────────┘  └──────────┘  └────────────┘        │
-└─────────────────────────────────────────────────────┘
-```
+![BAC4 Component Architecture](e2e/docs/screenshots/bac4-component-architecture.png)
+*BAC4's internal architecture: UI components connect through a central Zustand store to utilities*
 
 ### State Management
 
