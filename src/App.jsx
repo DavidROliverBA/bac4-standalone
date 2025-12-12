@@ -199,6 +199,18 @@ function App() {
     [setEdges]
   );
 
+  // Expose onConnect for E2E testing
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.__CREATE_CONNECTION__ = onConnect;
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        delete window.__CREATE_CONNECTION__;
+      }
+    };
+  }, [onConnect]);
+
   // Handle node click
   const onNodeClick = useCallback(
     (event, node) => {

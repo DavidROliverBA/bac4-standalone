@@ -1,0 +1,106 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "C4 Modelling Tool" [level=1] [ref=e7]
+        - generic [ref=e8]: "|"
+        - generic "Double-click to edit title" [ref=e9] [cursor=pointer]: New C4 Model
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]: "Level:"
+          - combobox "Select C4 diagram level" [ref=e13]:
+            - option "Context" [selected]
+            - option "Container"
+            - option "Component"
+            - option "Code"
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - button "Export" [ref=e16] [cursor=pointer]:
+              - img [ref=e17]
+              - text: Export
+            - generic [ref=e21]:
+              - button "JSON (BAC4)" [active] [ref=e22] [cursor=pointer]:
+                - img [ref=e23]
+                - text: JSON (BAC4)
+              - button "Structurizr JSON" [ref=e28] [cursor=pointer]:
+                - img [ref=e29]
+                - text: Structurizr JSON
+              - separator [ref=e34]
+              - button "PlantUML" [ref=e35] [cursor=pointer]:
+                - img [ref=e36]
+                - text: PlantUML
+              - button "Mermaid" [ref=e41] [cursor=pointer]:
+                - img [ref=e42]
+                - text: Mermaid
+              - button "Markdown" [ref=e47] [cursor=pointer]:
+                - img [ref=e48]
+                - text: Markdown
+              - button "HTML Document" [ref=e51] [cursor=pointer]:
+                - img [ref=e52]
+                - text: HTML Document
+              - separator [ref=e55]
+              - button "PNG Image" [ref=e56] [cursor=pointer]:
+                - img [ref=e57]
+                - text: PNG Image
+              - button "SVG Image" [ref=e62] [cursor=pointer]:
+                - img [ref=e63]
+                - text: SVG Image
+              - separator [ref=e68]
+              - button "Draw.io (.drawio)" [ref=e69] [cursor=pointer]:
+                - img [ref=e70]
+                - text: Draw.io (.drawio)
+          - generic [ref=e75] [cursor=pointer]:
+            - img [ref=e76]
+            - text: Import
+          - button "Layout" [ref=e80] [cursor=pointer]:
+            - img [ref=e81]
+            - text: Layout
+          - button "Clear All" [ref=e83] [cursor=pointer]
+  - generic [ref=e84]:
+    - complementary [ref=e85]:
+      - heading "Add Elements" [level=2] [ref=e86]
+      - paragraph [ref=e87]: Context Level
+      - generic [ref=e88]:
+        - generic [ref=e89]:
+          - img [ref=e90]
+          - generic [ref=e93]: Software System
+        - generic [ref=e94]:
+          - img [ref=e95]
+          - generic [ref=e98]: Person
+        - generic [ref=e99]:
+          - img [ref=e100]
+          - generic [ref=e104]: External System
+      - generic [ref=e105]:
+        - heading "Quick Tips" [level=3] [ref=e106]
+        - list [ref=e107]:
+          - listitem [ref=e108]: • Drag elements to canvas to add
+          - listitem [ref=e109]: • Click elements to edit properties
+          - listitem [ref=e110]: • Drag between elements to create relationships
+          - listitem [ref=e111]: • Use mouse wheel to zoom
+    - application [ref=e113]:
+      - group [ref=e116]:
+        - generic [ref=e119]:
+          - img [ref=e121]
+          - generic [ref=e124]:
+            - generic [ref=e125]: Software System
+            - generic [ref=e126]: New System
+      - img
+      - generic "Control Panel" [ref=e130]:
+        - button "Zoom In" [disabled]:
+          - img
+        - button "Zoom Out" [ref=e131] [cursor=pointer]:
+          - img [ref=e132]
+        - button "Fit View" [ref=e134] [cursor=pointer]:
+          - img [ref=e135]
+        - button "Toggle Interactivity" [ref=e137] [cursor=pointer]:
+          - img [ref=e138]
+      - img "Mini Map" [ref=e141]
+      - link "React Flow attribution" [ref=e144] [cursor=pointer]:
+        - /url: https://reactflow.dev
+        - text: React Flow
+    - complementary [ref=e146]:
+      - paragraph [ref=e148]: Select an element to view and edit its properties
+```

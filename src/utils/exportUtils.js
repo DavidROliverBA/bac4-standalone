@@ -4,7 +4,7 @@ import { saveAs } from 'file-saver';
 /**
  * Export diagram as PNG
  */
-export const exportAsPNG = async (elementId = 'react-flow-wrapper') => {
+export const exportAsPNG = async (model) => {
   const element = document.querySelector('.react-flow');
   if (!element) {
     alert('Canvas not found');
@@ -21,7 +21,8 @@ export const exportAsPNG = async (elementId = 'react-flow-wrapper') => {
       },
     });
 
-    saveAs(dataUrl, 'c4-diagram.png');
+    const filename = `${(model?.metadata?.name || 'c4-diagram').replace(/\s+/g, '-').toLowerCase()}.png`;
+    saveAs(dataUrl, filename);
   } catch (error) {
     console.error('Error exporting PNG:', error);
     alert('Failed to export PNG: ' + error.message);
@@ -31,7 +32,7 @@ export const exportAsPNG = async (elementId = 'react-flow-wrapper') => {
 /**
  * Export diagram as SVG
  */
-export const exportAsSVG = async () => {
+export const exportAsSVG = async (model) => {
   const element = document.querySelector('.react-flow');
   if (!element) {
     alert('Canvas not found');
@@ -47,7 +48,8 @@ export const exportAsSVG = async () => {
       },
     });
 
-    saveAs(dataUrl, 'c4-diagram.svg');
+    const filename = `${(model?.metadata?.name || 'c4-diagram').replace(/\s+/g, '-').toLowerCase()}.svg`;
+    saveAs(dataUrl, filename);
   } catch (error) {
     console.error('Error exporting SVG:', error);
     alert('Failed to export SVG: ' + error.message);
@@ -332,7 +334,7 @@ export const exportAsHTML = (model) => {
 </html>`;
 
   const blob = new Blob([html], { type: 'text/html' });
-  saveAs(blob, `${model.metadata.name.replace(/\s+/g, '-').toLowerCase()}-c4-model.html`);
+  saveAs(blob, `${(model.metadata?.name || 'c4-model').replace(/\s+/g, '-').toLowerCase()}.html`);
 };
 
 // Helper functions

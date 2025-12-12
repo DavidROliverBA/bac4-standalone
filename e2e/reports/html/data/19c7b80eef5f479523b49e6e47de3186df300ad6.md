@@ -1,0 +1,135 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "C4 Modelling Tool" [level=1] [ref=e7]
+        - generic [ref=e8]: "|"
+        - generic "Double-click to edit title" [ref=e9] [cursor=pointer]: New C4 Model
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]: "Level:"
+          - combobox "Select C4 diagram level" [ref=e13]:
+            - option "Context" [selected]
+            - option "Container"
+            - option "Component"
+            - option "Code"
+        - generic [ref=e14]:
+          - button "Export" [ref=e16] [cursor=pointer]:
+            - img [ref=e17]
+            - text: Export
+          - generic [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - text: Import
+          - button "Layout" [ref=e25] [cursor=pointer]:
+            - img [ref=e26]
+            - text: Layout
+          - button "Clear All" [ref=e28] [cursor=pointer]
+  - generic [ref=e29]:
+    - complementary [ref=e30]:
+      - heading "Add Elements" [level=2] [ref=e31]
+      - paragraph [ref=e32]: Context Level
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - img [ref=e35]
+          - generic [ref=e38]: Software System
+        - generic [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e43]: Person
+        - generic [ref=e44]:
+          - img [ref=e45]
+          - generic [ref=e49]: External System
+      - generic [ref=e50]:
+        - heading "Quick Tips" [level=3] [ref=e51]
+        - list [ref=e52]:
+          - listitem [ref=e53]: • Drag elements to canvas to add
+          - listitem [ref=e54]: • Click elements to edit properties
+          - listitem [ref=e55]: • Drag between elements to create relationships
+          - listitem [ref=e56]: • Use mouse wheel to zoom
+    - application [ref=e58]:
+      - generic [ref=e60]:
+        - generic:
+          - generic:
+            - img
+            - img:
+              - group "Edge from person-1765536381128-qet5xdn0d to system-1765536380646-r42flbf4j" [ref=e61] [cursor=pointer]:
+                - generic [ref=e64]:
+                  - generic: New relationship
+          - generic:
+            - group [ref=e66]:
+              - generic [ref=e69]:
+                - img [ref=e71]
+                - generic [ref=e74]:
+                  - generic [ref=e75]: Software System
+                  - generic [ref=e76]: Main System
+            - group [ref=e80]:
+              - generic [ref=e83]:
+                - img [ref=e85]
+                - generic [ref=e88]:
+                  - generic [ref=e89]: Person
+                  - generic [ref=e90]: User
+            - group [ref=e94]:
+              - generic [ref=e97]:
+                - img [ref=e99]
+                - generic [ref=e103]:
+                  - generic [ref=e104]: External System
+                  - generic [ref=e105]: External API
+      - img
+      - generic "Control Panel" [ref=e109]:
+        - button "Zoom In" [disabled]:
+          - img
+        - button "Zoom Out" [ref=e110] [cursor=pointer]:
+          - img [ref=e111]
+        - button "Fit View" [ref=e113] [cursor=pointer]:
+          - img [ref=e114]
+        - button "Toggle Interactivity" [ref=e116] [cursor=pointer]:
+          - img [ref=e117]
+      - img "Mini Map" [ref=e120]
+      - link "React Flow attribution" [ref=e125] [cursor=pointer]:
+        - /url: https://reactflow.dev
+        - text: React Flow
+    - complementary [ref=e127]:
+      - generic [ref=e128]:
+        - heading "Properties" [level=2] [ref=e129]
+        - button [ref=e130] [cursor=pointer]:
+          - img [ref=e131]
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - generic [ref=e136]: Type
+          - generic [ref=e137]: externalSystem
+        - generic [ref=e138]:
+          - generic [ref=e139]: ID
+          - generic [ref=e140]: externalSystem-1765536381611-degkgcmgy
+        - generic [ref=e141]:
+          - generic [ref=e142]: Name
+          - textbox "Name" [ref=e143]:
+            - /placeholder: Enter element name
+            - text: External API
+        - generic [ref=e144]:
+          - generic [ref=e145]: Technology
+          - textbox "Technology" [ref=e146]:
+            - /placeholder: e.g., Spring Boot, React, PostgreSQL
+        - generic [ref=e147]:
+          - generic [ref=e148]: Description
+          - textbox "Description" [ref=e149]:
+            - /placeholder: Describe the element's purpose and responsibilities
+        - generic [ref=e150]:
+          - generic [ref=e151]: Tags
+          - textbox "Tags" [ref=e152]:
+            - /placeholder: tag1, tag2, tag3
+          - paragraph [ref=e153]: Comma-separated values
+        - generic [ref=e154]:
+          - generic [ref=e155]: Position
+          - generic [ref=e156]:
+            - generic [ref=e157]:
+              - text: "X:"
+              - generic [ref=e158]: "264"
+            - generic [ref=e159]:
+              - text: "Y:"
+              - generic [ref=e160]: "-67"
+        - button "Delete Element" [ref=e162] [cursor=pointer]:
+          - img [ref=e163]
+          - text: Delete Element
+```

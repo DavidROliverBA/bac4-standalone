@@ -1,0 +1,95 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "C4 Modelling Tool" [level=1] [ref=e7]
+        - generic [ref=e8]: "|"
+        - generic "Double-click to edit title" [ref=e9] [cursor=pointer]: New C4 Model
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]: "Level:"
+          - combobox "Select C4 diagram level" [ref=e13]:
+            - option "Context" [selected]
+            - option "Container"
+            - option "Component"
+            - option "Code"
+        - generic [ref=e14]:
+          - button "Export" [ref=e16] [cursor=pointer]:
+            - img [ref=e17]
+            - text: Export
+          - generic [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - text: Import
+          - button "Layout" [ref=e25] [cursor=pointer]:
+            - img [ref=e26]
+            - text: Layout
+          - button "Clear All" [ref=e28] [cursor=pointer]
+  - generic [ref=e29]:
+    - complementary [ref=e30]:
+      - heading "Add Elements" [level=2] [ref=e31]
+      - paragraph [ref=e32]: Context Level
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - img [ref=e35]
+          - generic [ref=e38]: Software System
+        - generic [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e43]: Person
+        - generic [ref=e44]:
+          - img [ref=e45]
+          - generic [ref=e49]: External System
+      - generic [ref=e50]:
+        - heading "Quick Tips" [level=3] [ref=e51]
+        - list [ref=e52]:
+          - listitem [ref=e53]: • Drag elements to canvas to add
+          - listitem [ref=e54]: • Click elements to edit properties
+          - listitem [ref=e55]: • Drag between elements to create relationships
+          - listitem [ref=e56]: • Use mouse wheel to zoom
+    - application [ref=e58]:
+      - generic [ref=e60]:
+        - generic:
+          - generic:
+            - img
+            - img:
+              - group "Edge from system-1765536391254-55z412nuc to system-1765536391520-50rswxz4t" [ref=e61] [cursor=pointer]:
+                - generic [ref=e62]:
+                  - generic: New relationship
+          - generic:
+            - group [ref=e64]:
+              - generic [ref=e67]:
+                - img [ref=e69]
+                - generic [ref=e72]:
+                  - generic [ref=e73]: Software System
+                  - generic [ref=e74]: New System
+            - group [active] [ref=e78]:
+              - generic [ref=e81]:
+                - img [ref=e83]
+                - generic [ref=e86]:
+                  - generic [ref=e87]: Software System
+                  - generic [ref=e88]: New System
+            - group [ref=e92]:
+              - generic [ref=e95]:
+                - img [ref=e97]
+                - generic [ref=e100]:
+                  - generic [ref=e101]: Software System
+                  - generic [ref=e102]: New System
+      - img
+      - generic "Control Panel" [ref=e106]:
+        - button "Zoom In" [disabled]:
+          - img
+        - button "Zoom Out" [ref=e107] [cursor=pointer]:
+          - img [ref=e108]
+        - button "Fit View" [ref=e110] [cursor=pointer]:
+          - img [ref=e111]
+        - button "Toggle Interactivity" [ref=e113] [cursor=pointer]:
+          - img [ref=e114]
+      - img "Mini Map" [ref=e117]
+      - link "React Flow attribution" [ref=e122] [cursor=pointer]:
+        - /url: https://reactflow.dev
+        - text: React Flow
+    - complementary [ref=e124]:
+      - paragraph [ref=e126]: Select an element to view and edit its properties
+```

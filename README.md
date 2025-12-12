@@ -50,13 +50,15 @@ An interactive web-based C4 modelling tool built with React that allows architec
 
 - **Export Formats**:
   - JSON (full model data)
+  - Structurizr JSON (workspace format)
   - PlantUML C4 syntax
   - Mermaid C4 syntax
   - Markdown documentation
   - HTML standalone document
   - PNG image
   - SVG image
-- **Import**: Load previously exported JSON models
+  - Draw.io (.drawio) for diagrams.net
+- **Import**: Load previously exported JSON models (BAC4 or Structurizr format)
 - **Local Storage Auto-save**: Automatically saves every 30 seconds + on page close
 
 ### Auto-Layout
@@ -142,13 +144,15 @@ The standalone file `bac4-standalone.html` will be created in the root directory
 
 1. **Click "Export"** in header
 2. **Choose Format**:
-   - **JSON**: Save your work to re-import later
+   - **JSON (BAC4)**: Save your work to re-import later
+   - **Structurizr JSON**: Export to Structurizr workspace format
    - **PlantUML**: Generate C4-PlantUML code
    - **Mermaid**: Generate Mermaid C4 diagram syntax
    - **Markdown**: Create documentation
    - **HTML**: Standalone document with embedded model
    - **PNG**: Raster image for presentations
    - **SVG**: Vector image for scaling
+   - **Draw.io**: Open in diagrams.net for further editing
 3. **File Downloads**: Automatically with descriptive name
 
 ### Working with Levels
@@ -194,7 +198,8 @@ bac4-standalone/
 │   ├── hooks/
 │   │   └── useLocalStorage.js   # Auto-save hook (30s interval)
 │   ├── utils/
-│   │   ├── exportUtils.js       # 7 export formats
+│   │   ├── exportUtils.js       # 9 export formats (JSON, PlantUML, Mermaid, etc.)
+│   │   ├── structurizrUtils.js  # Structurizr JSON import/export
 │   │   └── layoutUtils.js       # 4 auto-layout algorithms
 │   ├── store.js                 # Zustand state management
 │   ├── App.jsx                  # Main application with React Flow
@@ -312,6 +317,23 @@ Self-contained document with:
 ### PNG/SVG
 Visual exports of current canvas view (excludes controls and minimap).
 
+### Structurizr JSON
+Export to [Structurizr](https://structurizr.com/) workspace format for use with:
+- Structurizr Lite/On-Premises
+- Structurizr Cloud
+- Other C4 tooling that supports the Structurizr format
+
+Import also supports Structurizr workspace JSON files.
+
+### Draw.io (.drawio)
+Export to [Draw.io/diagrams.net](https://app.diagrams.net/) format:
+- Opens directly in Draw.io desktop or web app
+- Full mxGraph XML format
+- Preserves element positions and relationships
+- C4-appropriate colors and styling
+- Edit further with Draw.io's extensive tooling
+- Compatible with VS Code Draw.io extension
+
 ---
 
 ## Features vs C4-PlantUML
@@ -323,7 +345,9 @@ Visual exports of current canvas view (excludes controls and minimap).
 | Real-time Preview | ✅ Immediate | ⚠️ Requires rendering |
 | Export to PlantUML | ✅ Generates syntax | N/A (is PlantUML) |
 | Export to Mermaid | ✅ Generates syntax | ❌ No |
-| Import from JSON | ✅ Full import | ❌ No |
+| Export to Draw.io | ✅ Full support | ❌ No |
+| Export to Structurizr | ✅ Workspace format | ❌ No |
+| Import from JSON | ✅ BAC4 + Structurizr | ❌ No |
 | Auto-layout | ✅ 4 algorithms | ✅ Built-in |
 | Relationship Styling | ✅ Arrow + Line style | ⚠️ Limited |
 | Local Storage | ✅ Auto-save 30s | ❌ No persistence |

@@ -14,3 +14,11 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* Improve React Flow attribution contrast for accessibility */
+.react-flow__attribution a {
+  color: #6b7280 !important; /* gray-500 for better contrast */
+}
+
+/* Hide React Flow attribution in production (optional - uncomment if desired) */
+/* .react-flow__attribution { display: none; } */

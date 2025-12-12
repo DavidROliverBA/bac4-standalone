@@ -1,0 +1,119 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "C4 Modelling Tool" [level=1] [ref=e7]
+        - generic [ref=e8]: "|"
+        - generic "Double-click to edit title" [ref=e9] [cursor=pointer]: E-Commerce System
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]: "Level:"
+          - combobox "Select C4 diagram level" [ref=e13]:
+            - option "Context" [selected]
+            - option "Container"
+            - option "Component"
+            - option "Code"
+        - generic [ref=e14]:
+          - button "Export" [ref=e16] [cursor=pointer]:
+            - img [ref=e17]
+            - text: Export
+          - generic [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - text: Import
+          - button "Layout" [ref=e25] [cursor=pointer]:
+            - img [ref=e26]
+            - text: Layout
+          - button "Clear All" [ref=e28] [cursor=pointer]
+  - generic [ref=e29]:
+    - complementary [ref=e30]:
+      - heading "Add Elements" [level=2] [ref=e31]
+      - paragraph [ref=e32]: Context Level
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - img [ref=e35]
+          - generic [ref=e38]: Software System
+        - generic [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e43]: Person
+        - generic [ref=e44]:
+          - img [ref=e45]
+          - generic [ref=e49]: External System
+      - generic [ref=e50]:
+        - heading "Quick Tips" [level=3] [ref=e51]
+        - list [ref=e52]:
+          - listitem [ref=e53]: • Drag elements to canvas to add
+          - listitem [ref=e54]: • Click elements to edit properties
+          - listitem [ref=e55]: • Drag between elements to create relationships
+          - listitem [ref=e56]: • Use mouse wheel to zoom
+    - application [ref=e58]:
+      - generic [ref=e60]:
+        - generic:
+          - generic:
+            - img
+            - img:
+              - group "Edge from person-1 to system-1" [ref=e61] [cursor=pointer]:
+                - generic [ref=e64]:
+                  - generic: Browses products and places orders
+            - img:
+              - group "Edge from system-1 to external-1" [ref=e66] [cursor=pointer]:
+                - generic [ref=e69]:
+                  - generic: Processes payments via
+          - generic:
+            - group [ref=e71]:
+              - generic [ref=e74]:
+                - img [ref=e76]
+                - generic [ref=e79]:
+                  - generic [ref=e80]: Software System
+                  - generic [ref=e81]: E-Commerce Platform
+                  - generic [ref=e82]: "[Spring Boot, React]"
+                  - generic [ref=e83]: Handles all e-commerce operations including product catalog, orders, and payments
+            - group [ref=e87]:
+              - generic [ref=e90]:
+                - img [ref=e92]
+                - generic [ref=e95]:
+                  - generic [ref=e96]: Person
+                  - generic [ref=e97]: Customer
+                  - generic [ref=e98]: A user who browses and purchases products from the platform
+            - group [ref=e102]:
+              - generic [ref=e105]:
+                - img [ref=e107]
+                - generic [ref=e110]:
+                  - generic [ref=e111]: Person
+                  - generic [ref=e112]: Administrator
+                  - generic [ref=e113]: Internal staff who manages products and orders
+            - group [ref=e117]:
+              - generic [ref=e120]:
+                - img [ref=e122]
+                - generic [ref=e126]:
+                  - generic [ref=e127]: External System
+                  - generic [ref=e128]: Payment Gateway
+                  - generic [ref=e129]: "[Stripe API]"
+                  - generic [ref=e130]: External payment processing service (Stripe)
+            - group [ref=e134]:
+              - generic [ref=e137]:
+                - img [ref=e139]
+                - generic [ref=e143]:
+                  - generic [ref=e144]: External System
+                  - generic [ref=e145]: Email Service
+                  - generic [ref=e146]: "[SendGrid API]"
+                  - generic [ref=e147]: Email delivery service for notifications
+      - img
+      - generic "Control Panel" [ref=e151]:
+        - button "Zoom In" [ref=e152] [cursor=pointer]:
+          - img [ref=e153]
+        - button "Zoom Out" [ref=e155] [cursor=pointer]:
+          - img [ref=e156]
+        - button "Fit View" [ref=e158] [cursor=pointer]:
+          - img [ref=e159]
+        - button "Toggle Interactivity" [ref=e161] [cursor=pointer]:
+          - img [ref=e162]
+      - img "Mini Map" [ref=e165]
+      - link "React Flow attribution" [ref=e172] [cursor=pointer]:
+        - /url: https://reactflow.dev
+        - text: React Flow
+    - complementary [ref=e174]:
+      - paragraph [ref=e176]: Select an element to view and edit its properties
+```

@@ -1,0 +1,114 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "C4 Modelling Tool" [level=1] [ref=e7]
+        - generic [ref=e8]: "|"
+        - generic "Double-click to edit title" [ref=e9] [cursor=pointer]: New C4 Model
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]: "Level:"
+          - combobox "Select C4 diagram level" [ref=e13]:
+            - option "Context" [selected]
+            - option "Container"
+            - option "Component"
+            - option "Code"
+        - generic [ref=e14]:
+          - button "Export" [ref=e16] [cursor=pointer]:
+            - img [ref=e17]
+            - text: Export
+          - generic [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - text: Import
+          - button "Layout" [ref=e25] [cursor=pointer]:
+            - img [ref=e26]
+            - text: Layout
+          - button "Clear All" [ref=e28] [cursor=pointer]
+  - generic [ref=e29]:
+    - complementary [ref=e30]:
+      - heading "Add Elements" [level=2] [ref=e31]
+      - paragraph [ref=e32]: Context Level
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - img [ref=e35]
+          - generic [ref=e38]: Software System
+        - generic [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e43]: Person
+        - generic [ref=e44]:
+          - img [ref=e45]
+          - generic [ref=e49]: External System
+      - generic [ref=e50]:
+        - heading "Quick Tips" [level=3] [ref=e51]
+        - list [ref=e52]:
+          - listitem [ref=e53]: • Drag elements to canvas to add
+          - listitem [ref=e54]: • Click elements to edit properties
+          - listitem [ref=e55]: • Drag between elements to create relationships
+          - listitem [ref=e56]: • Use mouse wheel to zoom
+    - application [ref=e58]:
+      - group [ref=e61]:
+        - generic [ref=e64]:
+          - img [ref=e66]
+          - generic [ref=e69]:
+            - generic [ref=e70]: Software System
+            - generic [ref=e71]: New System
+      - img
+      - generic "Control Panel" [ref=e75]:
+        - button "Zoom In" [disabled]:
+          - img
+        - button "Zoom Out" [ref=e76] [cursor=pointer]:
+          - img [ref=e77]
+        - button "Fit View" [ref=e79] [cursor=pointer]:
+          - img [ref=e80]
+        - button "Toggle Interactivity" [ref=e82] [cursor=pointer]:
+          - img [ref=e83]
+      - img "Mini Map" [ref=e86]
+      - link "React Flow attribution" [ref=e89] [cursor=pointer]:
+        - /url: https://reactflow.dev
+        - text: React Flow
+    - complementary [ref=e91]:
+      - generic [ref=e92]:
+        - heading "Properties" [level=2] [ref=e93]
+        - button [ref=e94] [cursor=pointer]:
+          - img [ref=e95]
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]: Type
+          - generic [ref=e101]: system
+        - generic [ref=e102]:
+          - generic [ref=e103]: ID
+          - generic [ref=e104]: system-1765536390522-xj93jguuw
+        - generic [ref=e105]:
+          - generic [ref=e106]: Name
+          - textbox "Name" [ref=e107]:
+            - /placeholder: Enter element name
+            - text: New System
+        - generic [ref=e108]:
+          - generic [ref=e109]: Technology
+          - textbox "Technology" [ref=e110]:
+            - /placeholder: e.g., Spring Boot, React, PostgreSQL
+        - generic [ref=e111]:
+          - generic [ref=e112]: Description
+          - textbox "Description" [ref=e113]:
+            - /placeholder: Describe the element's purpose and responsibilities
+        - generic [ref=e114]:
+          - generic [ref=e115]: Tags
+          - textbox "Tags" [ref=e116]:
+            - /placeholder: tag1, tag2, tag3
+          - paragraph [ref=e117]: Comma-separated values
+        - generic [ref=e118]:
+          - generic [ref=e119]: Position
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - text: "X:"
+              - generic [ref=e122]: "300"
+            - generic [ref=e123]:
+              - text: "Y:"
+              - generic [ref=e124]: "200"
+        - button "Delete Element" [active] [ref=e126] [cursor=pointer]:
+          - img [ref=e127]
+          - text: Delete Element
+```

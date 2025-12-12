@@ -10,6 +10,8 @@ const Header = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showLayoutMenu, setShowLayoutMenu] = useState(false);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(metadata.name);
 
   const levels = [
     { value: 'context', label: 'Context' },
@@ -45,7 +47,7 @@ const Header = () => {
     const model = exportModel();
     const dataStr = JSON.stringify(model, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-    const exportFileDefaultName = `${metadata.name.replace(/\s+/g, '-').toLowerCase()}-c4-model.json`;
+    const exportFileDefaultName = `${(model.metadata?.name || 'c4-model').replace(/\s+/g, '-').toLowerCase()}.json`;
 
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -85,7 +87,7 @@ const Header = () => {
     const structurizrWorkspace = exportToStructurizr(model);
     const dataStr = JSON.stringify(structurizrWorkspace, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-    const exportFileDefaultName = `${metadata.name.replace(/\s+/g, '-').toLowerCase()}-structurizr.json`;
+    const exportFileDefaultName = `${(model.metadata?.name || 'c4-model').replace(/\s+/g, '-').toLowerCase()}-structurizr.json`;
 
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -107,7 +109,7 @@ const Header = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${metadata.name.replace(/\s+/g, '-').toLowerCase()}-c4.puml`;
+    link.download = `${(model.metadata?.name || 'c4-model').replace(/\s+/g, '-').toLowerCase()}.puml`;
     link.click();
     URL.revokeObjectURL(url);
     setShowExportMenu(false);
@@ -120,7 +122,7 @@ const Header = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${metadata.name.replace(/\s+/g, '-').toLowerCase()}-c4.mmd`;
+    link.download = `${(model.metadata?.name || 'c4-model').replace(/\s+/g, '-').toLowerCase()}.mmd`;
     link.click();
     URL.revokeObjectURL(url);
     setShowExportMenu(false);
@@ -133,7 +135,7 @@ const Header = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${metadata.name.replace(/\s+/g, '-').toLowerCase()}-c4.md`;
+    link.download = `${(model.metadata?.name || 'c4-model').replace(/\s+/g, '-').toLowerCase()}.md`;
     link.click();
     URL.revokeObjectURL(url);
     setShowExportMenu(false);
@@ -146,12 +148,14 @@ const Header = () => {
   };
 
   const handleExportPNG = async () => {
-    await exportAsPNG();
+    const model = exportModel();
+    await exportAsPNG(model);
     setShowExportMenu(false);
   };
 
   const handleExportSVG = async () => {
-    await exportAsSVG();
+    const model = exportModel();
+    await exportAsSVG(model);
     setShowExportMenu(false);
   };
 
@@ -159,6 +163,30 @@ const Header = () => {
     const model = exportModel();
     exportAsDrawio(model);
     setShowExportMenu(false);
+  };
+
+  const handleTitleDoubleClick = () => {
+    setEditedTitle(metadata.name);
+    setIsEditingTitle(true);
+  };
+
+  const handleTitleSave = () => {
+    const trimmedTitle = editedTitle.trim();
+    if (trimmedTitle) {
+      setMetadata({ ...metadata, name: trimmedTitle });
+    } else {
+      setEditedTitle(metadata.name);
+    }
+    setIsEditingTitle(false);
+  };
+
+  const handleTitleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleTitleSave();
+    } else if (e.key === 'Escape') {
+      setEditedTitle(metadata.name);
+      setIsEditingTitle(false);
+    }
   };
 
   const applyLayout = (layoutFn) => {
@@ -180,19 +208,38 @@ const Header = () => {
           <h1 className="text-xl font-bold text-gray-900">
             C4 Modelling Tool
           </h1>
-          <div className="text-sm text-gray-600">
-            {metadata.name}
-          </div>
+          <span className="text-gray-400">|</span>
+          {isEditingTitle ? (
+            <input
+              type="text"
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              onBlur={handleTitleSave}
+              onKeyDown={handleTitleKeyDown}
+              autoFocus
+              className="text-sm text-gray-900 font-medium px-2 py-1 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[200px]"
+            />
+          ) : (
+            <div
+              onDoubleClick={handleTitleDoubleClick}
+              className="text-sm text-gray-600 cursor-pointer hover:text-gray-900 hover:bg-gray-100 px-2 py-1 rounded transition-colors"
+              title="Double-click to edit title"
+            >
+              {metadata.name}
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-4">
           {/* Level Selector */}
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-700">Level:</span>
+            <label htmlFor="level-selector" className="text-sm font-medium text-gray-700">Level:</label>
             <select
+              id="level-selector"
               value={currentLevel}
               onChange={(e) => handleLevelChange(e.target.value)}
               className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Select C4 diagram level"
             >
               {levels.map((level) => (
                 <option key={level.value} value={level.value}>
@@ -288,7 +335,7 @@ const Header = () => {
               )}
             </div>
 
-            <label className="flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm cursor-pointer transition-colors">
+            <label className="flex items-center gap-2 px-3 py-1.5 bg-green-700 text-white rounded-md hover:bg-green-800 text-sm cursor-pointer transition-colors">
               <Upload className="w-4 h-4" />
               Import
               <input
@@ -296,6 +343,7 @@ const Header = () => {
                 accept=".json"
                 onChange={handleImportJSON}
                 className="hidden"
+                aria-label="Import JSON model file"
               />
             </label>
 

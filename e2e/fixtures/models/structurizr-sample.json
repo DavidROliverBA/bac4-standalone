@@ -1,0 +1,135 @@
+{
+  "id": 1,
+  "name": "Internet Banking System",
+  "description": "Sample Structurizr workspace for import testing",
+  "lastModifiedDate": "2024-01-15T10:30:00Z",
+  "model": {
+    "people": [
+      {
+        "id": "1",
+        "name": "Personal Banking Customer",
+        "description": "A customer of the bank, with personal bank accounts.",
+        "tags": "Element,Person",
+        "relationships": [
+          {
+            "id": "4",
+            "sourceId": "1",
+            "destinationId": "2",
+            "description": "Views account balances and makes payments using",
+            "technology": "HTTPS"
+          }
+        ]
+      },
+      {
+        "id": "10",
+        "name": "Bank Staff",
+        "description": "Internal bank employee",
+        "tags": "Element,Person",
+        "relationships": [
+          {
+            "id": "11",
+            "sourceId": "10",
+            "destinationId": "2",
+            "description": "Manages customer accounts using",
+            "technology": "HTTPS"
+          }
+        ]
+      }
+    ],
+    "softwareSystems": [
+      {
+        "id": "2",
+        "name": "Internet Banking System",
+        "description": "Allows customers to view information about their bank accounts, and make payments.",
+        "tags": "Element,Software System",
+        "containers": [
+          {
+            "id": "5",
+            "name": "Web Application",
+            "description": "Delivers the static content and the Internet banking single page application.",
+            "technology": "Java and Spring MVC",
+            "tags": "Element,Container"
+          },
+          {
+            "id": "6",
+            "name": "Single-Page Application",
+            "description": "Provides all of the Internet banking functionality to customers via their web browser.",
+            "technology": "JavaScript and Angular",
+            "tags": "Element,Container"
+          },
+          {
+            "id": "7",
+            "name": "API Application",
+            "description": "Provides Internet banking functionality via a JSON/HTTPS API.",
+            "technology": "Java and Spring MVC",
+            "tags": "Element,Container"
+          },
+          {
+            "id": "8",
+            "name": "Database",
+            "description": "Stores user registration information, hashed authentication credentials, access logs, etc.",
+            "technology": "Oracle Database Schema",
+            "tags": "Element,Container,Database"
+          }
+        ],
+        "relationships": [
+          {
+            "id": "9",
+            "sourceId": "2",
+            "destinationId": "3",
+            "description": "Gets account information from, and makes payments using",
+            "technology": "XML/HTTPS"
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "Mainframe Banking System",
+        "description": "Stores all of the core banking information about customers, accounts, transactions, etc.",
+        "tags": "Element,Software System,Existing System",
+        "containers": [],
+        "relationships": []
+      }
+    ]
+  },
+  "views": {
+    "systemLandscapeViews": [],
+    "systemContextViews": [
+      {
+        "softwareSystemId": "2",
+        "key": "SystemContext",
+        "description": "System context diagram for the Internet Banking System.",
+        "elements": [
+          { "id": "1", "x": 100, "y": 100 },
+          { "id": "2", "x": 400, "y": 200 },
+          { "id": "3", "x": 700, "y": 300 },
+          { "id": "10", "x": 100, "y": 300 }
+        ]
+      }
+    ],
+    "containerViews": [
+      {
+        "softwareSystemId": "2",
+        "key": "Containers",
+        "description": "Container diagram for the Internet Banking System.",
+        "elements": [
+          { "id": "1", "x": 50, "y": 100 },
+          { "id": "5", "x": 200, "y": 250 },
+          { "id": "6", "x": 400, "y": 250 },
+          { "id": "7", "x": 600, "y": 250 },
+          { "id": "8", "x": 400, "y": 450 },
+          { "id": "3", "x": 800, "y": 350 }
+        ]
+      }
+    ],
+    "componentViews": [],
+    "configuration": {
+      "branding": {},
+      "styles": {},
+      "terminology": {}
+    }
+  },
+  "documentation": {
+    "sections": []
+  }
+}

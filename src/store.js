@@ -322,4 +322,9 @@ const useStore = create((set, get) => ({
   },
 }));
 
+// Expose store for E2E testing (only in development/test environments)
+if (typeof window !== 'undefined') {
+  window.__ZUSTAND_STORE__ = useStore;
+}
+
 export default useStore;

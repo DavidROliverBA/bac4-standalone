@@ -1,0 +1,77 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "C4 Modelling Tool" [level=1] [ref=e7]
+        - generic [ref=e8]: "|"
+        - generic "Double-click to edit title" [ref=e9] [cursor=pointer]: New C4 Model
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]: "Level:"
+          - combobox "Select C4 diagram level" [ref=e13]:
+            - option "Context"
+            - option "Container" [selected]
+            - option "Component"
+            - option "Code"
+        - generic [ref=e14]:
+          - button "Export" [ref=e16] [cursor=pointer]:
+            - img [ref=e17]
+            - text: Export
+          - generic [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - text: Import
+          - button "Layout" [ref=e25] [cursor=pointer]:
+            - img [ref=e26]
+            - text: Layout
+          - button "Clear All" [active] [ref=e28] [cursor=pointer]
+  - generic [ref=e29]:
+    - complementary [ref=e30]:
+      - heading "Add Elements" [level=2] [ref=e31]
+      - paragraph [ref=e32]: Container Level
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - img [ref=e35]
+          - generic [ref=e38]: Software System
+        - generic [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e43]: Container
+        - generic [ref=e44]:
+          - img [ref=e45]
+          - generic [ref=e48]: Person
+        - generic [ref=e49]:
+          - img [ref=e50]
+          - generic [ref=e54]: External System
+      - generic [ref=e55]:
+        - heading "Quick Tips" [level=3] [ref=e56]
+        - list [ref=e57]:
+          - listitem [ref=e58]: • Drag elements to canvas to add
+          - listitem [ref=e59]: • Click elements to edit properties
+          - listitem [ref=e60]: • Drag between elements to create relationships
+          - listitem [ref=e61]: • Use mouse wheel to zoom
+    - application [ref=e63]:
+      - group [ref=e66]:
+        - generic [ref=e69]:
+          - img [ref=e71]
+          - generic [ref=e74]:
+            - generic [ref=e75]: Container
+            - generic [ref=e76]: New Container
+      - img
+      - generic "Control Panel" [ref=e80]:
+        - button "Zoom In" [disabled]:
+          - img
+        - button "Zoom Out" [ref=e81] [cursor=pointer]:
+          - img [ref=e82]
+        - button "Fit View" [ref=e84] [cursor=pointer]:
+          - img [ref=e85]
+        - button "Toggle Interactivity" [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+      - img "Mini Map" [ref=e91]
+      - link "React Flow attribution" [ref=e94] [cursor=pointer]:
+        - /url: https://reactflow.dev
+        - text: React Flow
+    - complementary [ref=e96]:
+      - paragraph [ref=e98]: Select an element to view and edit its properties
+```

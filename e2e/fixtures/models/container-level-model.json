@@ -1,0 +1,171 @@
+{
+  "metadata": {
+    "name": "E-Commerce Platform - Containers",
+    "version": "1.0",
+    "author": "Test User"
+  },
+  "systems": [
+    {
+      "id": "system-1",
+      "type": "system",
+      "name": "E-Commerce Platform",
+      "description": "The main e-commerce application",
+      "technology": "",
+      "tags": [],
+      "position": { "x": 400, "y": 50 }
+    }
+  ],
+  "containers": [
+    {
+      "id": "container-1",
+      "type": "container",
+      "name": "Web Application",
+      "description": "Customer-facing web interface",
+      "technology": "React, TypeScript",
+      "tags": ["frontend", "web"],
+      "position": { "x": 150, "y": 200 }
+    },
+    {
+      "id": "container-2",
+      "type": "container",
+      "name": "Mobile App",
+      "description": "Native mobile application",
+      "technology": "React Native",
+      "tags": ["frontend", "mobile"],
+      "position": { "x": 350, "y": 200 }
+    },
+    {
+      "id": "container-3",
+      "type": "container",
+      "name": "API Gateway",
+      "description": "REST API gateway for all clients",
+      "technology": "Node.js, Express",
+      "tags": ["backend", "api"],
+      "position": { "x": 250, "y": 350 }
+    },
+    {
+      "id": "container-4",
+      "type": "container",
+      "name": "Order Service",
+      "description": "Handles order processing",
+      "technology": "Spring Boot, Java",
+      "tags": ["backend", "service"],
+      "position": { "x": 450, "y": 350 }
+    },
+    {
+      "id": "container-5",
+      "type": "container",
+      "name": "Database",
+      "description": "Primary data store",
+      "technology": "PostgreSQL",
+      "tags": ["database"],
+      "position": { "x": 350, "y": 500 }
+    },
+    {
+      "id": "container-6",
+      "type": "container",
+      "name": "Cache",
+      "description": "In-memory cache",
+      "technology": "Redis",
+      "tags": ["cache"],
+      "position": { "x": 550, "y": 500 }
+    }
+  ],
+  "components": [],
+  "people": [
+    {
+      "id": "person-1",
+      "type": "person",
+      "name": "Customer",
+      "description": "End user of the platform",
+      "technology": "",
+      "tags": [],
+      "position": { "x": 50, "y": 100 }
+    }
+  ],
+  "externalSystems": [
+    {
+      "id": "external-1",
+      "type": "externalSystem",
+      "name": "Payment Gateway",
+      "description": "External payment service",
+      "technology": "Stripe",
+      "tags": [],
+      "position": { "x": 650, "y": 350 }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "rel-1",
+      "from": "person-1",
+      "to": "container-1",
+      "description": "Uses",
+      "technology": "HTTPS",
+      "arrowDirection": "right",
+      "lineStyle": "solid"
+    },
+    {
+      "id": "rel-2",
+      "from": "person-1",
+      "to": "container-2",
+      "description": "Uses",
+      "technology": "HTTPS",
+      "arrowDirection": "right",
+      "lineStyle": "solid"
+    },
+    {
+      "id": "rel-3",
+      "from": "container-1",
+      "to": "container-3",
+      "description": "Makes API calls to",
+      "technology": "REST/JSON",
+      "arrowDirection": "right",
+      "lineStyle": "solid"
+    },
+    {
+      "id": "rel-4",
+      "from": "container-2",
+      "to": "container-3",
+      "description": "Makes API calls to",
+      "technology": "REST/JSON",
+      "arrowDirection": "right",
+      "lineStyle": "solid"
+    },
+    {
+      "id": "rel-5",
+      "from": "container-3",
+      "to": "container-4",
+      "description": "Routes requests to",
+      "technology": "gRPC",
+      "arrowDirection": "right",
+      "lineStyle": "solid"
+    },
+    {
+      "id": "rel-6",
+      "from": "container-4",
+      "to": "container-5",
+      "description": "Reads from and writes to",
+      "technology": "SQL/TCP",
+      "arrowDirection": "right",
+      "lineStyle": "solid"
+    },
+    {
+      "id": "rel-7",
+      "from": "container-4",
+      "to": "container-6",
+      "description": "Caches data in",
+      "technology": "Redis Protocol",
+      "arrowDirection": "right",
+      "lineStyle": "dashed"
+    },
+    {
+      "id": "rel-8",
+      "from": "container-4",
+      "to": "external-1",
+      "description": "Processes payments via",
+      "technology": "REST/HTTPS",
+      "arrowDirection": "right",
+      "lineStyle": "solid"
+    }
+  ]
+}
