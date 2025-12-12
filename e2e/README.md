@@ -1,6 +1,6 @@
 # BAC4 E2E Test Suite
 
-End-to-end tests for the BAC4 C4 Modelling Tool using Playwright.
+End-to-end tests for the BAC4 Modelling Tool using Playwright.
 
 ## Quick Start
 

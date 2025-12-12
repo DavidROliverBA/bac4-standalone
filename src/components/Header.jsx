@@ -206,7 +206,7 @@ const Header = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold text-gray-900">
-            C4 Modelling Tool
+            BAC4 Modelling Tool
           </h1>
           <span className="text-gray-400">|</span>
           {isEditingTitle ? (
